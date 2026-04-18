@@ -105,9 +105,9 @@ export const RocketTransition = () => {
               position: 'fixed', 
               top: 0, left: 0, 
               width: '100%', height: '100%', 
-              pointerEvents: 'none', 
+              pointerEvents: 'auto', 
               zIndex: 9999,
-              background: 'rgba(46, 41, 78, 0.6)',
+              background: 'rgba(46, 41, 78, 0.5)',
               backdropFilter: 'blur(3px)'
             }}
           >
@@ -278,28 +278,34 @@ export const RocketTransition = () => {
               transition={{ delay: 3.5, duration: 0.5 }}
               style={{
                 position: 'absolute',
-                bottom: '15%',
+                bottom: '18%',
                 left: '50%',
                 zIndex: 20
               }}
             >
-              <button 
-                onClick={handleEnterChat}
+              <motion.button 
+                whileHover={{ scale: 1.05, boxShadow: '0 12px 40px rgba(217, 3, 104, 0.8)' }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEnterChat();
+                }}
                 style={{
-                  pointerEvents: 'auto',
                   background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
                   color: 'white',
                   border: 'none',
-                  padding: '16px 36px',
+                  padding: '18px 48px',
                   borderRadius: '40px',
-                  fontSize: '1.2rem',
-                  fontWeight: 'bold',
-                  boxShadow: '0 8px 30px rgba(217, 3, 104, 0.6)',
+                  fontSize: '1.3rem',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  fontWeight: '900',
+                  boxShadow: '0 8px 30px rgba(217, 3, 104, 0.5)',
                   cursor: 'pointer'
                 }}
               >
                 Open Transmission
-              </button>
+              </motion.button>
             </motion.div>
           </motion.div>
         )}
