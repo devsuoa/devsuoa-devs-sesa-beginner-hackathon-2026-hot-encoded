@@ -167,7 +167,9 @@ export default function OrbitSystem() {
           minWidth: '60px',
           minHeight: '60px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+          background: preferences.profilePic
+            ? `url(${preferences.profilePic}) center/cover`
+            : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
           boxShadow: '0 0 30px var(--color-secondary)',
           display: 'flex',
           alignItems: 'center',
@@ -175,9 +177,10 @@ export default function OrbitSystem() {
           fontWeight: 'bold',
           zIndex: 10,
           fontSize: 'clamp(1rem, 2.5vmin, 1.5rem)',
-          color: 'white'
+          color: 'white',
+          border: '2px solid var(--color-secondary)',
         }}>
-          {preferences.name.substring(0, 2).toUpperCase() || 'YOU'}
+          {!preferences.profilePic && (preferences.name.substring(0, 2).toUpperCase() || 'YOU')}
         </div>
 
         {/* Orbit Rings and Aliens */}
