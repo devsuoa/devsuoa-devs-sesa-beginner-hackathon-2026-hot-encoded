@@ -4,6 +4,7 @@ import Preferences from './pages/Preferences';
 import Home from './pages/home/Home';
 import Explore from './pages/Explore';
 import Chat from './pages/Chat';
+import { RocketTransition } from './components/RocketTransition';
 
 function App() {
   const location = useLocation();
@@ -29,6 +30,8 @@ function App() {
           <Route path="/chat/:id" element={<Chat />} />
         </Routes>
       </main>
+
+      <RocketTransition />
     </div>
   );
 }
