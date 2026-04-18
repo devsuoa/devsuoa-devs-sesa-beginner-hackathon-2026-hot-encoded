@@ -91,7 +91,6 @@ export default function OrbitSystem() {
     }
   };
 
-  const visibleAliens = mockAliens.filter(a => activeIds.includes(a.id));
 
   return (
     <>

@@ -8,7 +8,6 @@ import { RocketTransition } from './components/RocketTransition';
 
 function App() {
   const location = useLocation();
-  const hideExploreLink = location.pathname === '/' || location.pathname === '/preferences';
   const isHomePage = location.pathname === '/';
 
   return (

@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
 interface TransitionContextType {
@@ -12,7 +12,6 @@ interface TransitionContextType {
 
 export const TransitionContext = createContext<TransitionContextType | undefined>(undefined);
 
-const heartSvg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,25 C50,25 25,0 0,25 C-25,50 25,90 50,100 C75,90 125,50 100,25 C75,0 50,25 50,25 Z" fill="black"/></svg>`;
 
 export const TransitionProvider = ({ children }: { children: ReactNode }) => {
   const [isLaunching, setIsLaunching] = useState(false);
