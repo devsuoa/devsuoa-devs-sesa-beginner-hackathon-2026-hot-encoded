@@ -11,7 +11,7 @@ export interface UserPreferences {
   limbs: number;
   alienType: string;
   size: string;
-  maxDistanceAU: number;
+  maxDistanceLY: number;
   goals: string;
   profilePic: string; // URL or base64
 }

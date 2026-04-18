@@ -19,8 +19,8 @@ export default function Explore() {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', width: '100%', boxSizing: 'border-box' }}>
       <h2 style={{ color: 'var(--color-primary)', textShadow: '0 0 10px rgba(130, 2, 99, 0.5)' }}>Exploring Sector...</h2>
-      <p style={{ marginBottom: '10px' }}>Scanning for matches within {preferences.maxDistanceAU} AU</p>
-      
+      <p style={{ marginBottom: '10px' }}>Scanning for matches within {preferences.maxDistanceLY} Light years</p>
+
       <OrbitSystem />
     </div>
   );

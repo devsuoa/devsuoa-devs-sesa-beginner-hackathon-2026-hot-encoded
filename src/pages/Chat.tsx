@@ -22,12 +22,12 @@ type Message = {
 export default function Chat() {
   const { id } = useParams();
   const { matches } = useAppContext();
-  
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   const alien = matches.find(m => m.id === id);
 
   const scrollToBottom = () => {
@@ -42,10 +42,10 @@ export default function Chat() {
   const generateAlienResponse = async (userText: string, currentMessages: Message[]) => {
     // Check if the user has provided a Gemini API Key in their environment variables (optional AI integration)
     const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    
+
     if (geminiApiKey && geminiApiKey !== 'YOUR_GEMINI_API_KEY_HERE') {
       // Format the last few messages for conversational context
-      const chatHistory = currentMessages.slice(-4).map(m => 
+      const chatHistory = currentMessages.slice(-4).map(m =>
         `${m.sender === 'user' ? 'Human' : alien?.name}: ${m.text}`
       ).join('\n');
 
@@ -76,7 +76,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
             }]
           })
         });
-        
+
         const data = await response.json();
         if (data.error) {
           console.error("Gemini API Error:", data.error);
@@ -91,7 +91,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         return "[TRANSLATOR COMMUNICATION FAILURE: Unable to reach Gemini backend. Did you restart the server?]";
       }
     }
-    
+
     // Fallback ONLY if there is no API key configured at all
     return ALIEN_RESPONSES[Math.floor(Math.random() * ALIEN_RESPONSES.length)];
   };
@@ -111,7 +111,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
 
     // Simulate "Processing Translation..." delay
     const delay = Math.floor(Math.random() * 1500) + 1500; // 1.5s - 3.0s delay
-    
+
     setTimeout(async () => {
       // Pass the previous messages list array AND the new user message
       const responseText = await generateAlienResponse(userMessage.text, [...messages, userMessage]);
@@ -120,7 +120,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         sender: 'alien',
         text: responseText
       };
-      
+
       setMessages(prev => [...prev, alienMessage]);
       setIsTranslating(false);
     }, delay);
@@ -139,14 +139,14 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
   return (
     <div style={{ width: '100%', maxWidth: '800px', margin: '20px auto', padding: '0 20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
       <div className="glass-panel" style={{ backgroundColor: '#1a1829', border: 'none', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
-        
+
         {/* Chat Header */}
         <div style={{ padding: '20px', position: 'relative', display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ position: 'absolute', bottom: 0, left: '5%', right: '5%', height: '1px', background: 'linear-gradient(90deg, transparent, var(--color-secondary), transparent)', opacity: 0.5 }}></div>
           <img src={alien.profilePic} alt={alien.name} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} />
           <div>
             <h3 style={{ margin: 0, color: 'var(--color-primary)' }}>{alien.name}</h3>
-            <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.6)' }}>{alien.alienType} • {alien.distanceAU} AU away</span>
+            <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.6)' }}>{alien.alienType} • {alien.distanceLY} Light years away</span>
           </div>
         </div>
 
@@ -154,14 +154,14 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         <div style={{ flex: 1, padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {messages.length === 0 && (
             <div style={{ textAlign: 'center', margin: '20px 0', color: 'rgba(234, 222, 218, 0.4)', fontSize: '0.9rem' }}>
-              Connection established across {alien.distanceAU} AU. Say hello!
+              Connection established across {alien.distanceLY} Light years. Say hello!
             </div>
           )}
-          
+
           {messages.map((msg) => (
-            <div 
-              key={msg.id} 
-              style={{ 
+            <div
+              key={msg.id}
+              style={{
                 alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
                 maxWidth: '80%',
                 backgroundColor: msg.sender === 'user' ? 'var(--color-secondary)' : '#2A263A',
@@ -177,24 +177,24 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
               {msg.text}
             </div>
           ))}
-          
+
           {isTranslating && (
             <div style={{ alignSelf: 'flex-start', color: 'var(--color-secondary)', fontSize: '0.9rem', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid var(--color-secondary)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></span>
               Processing Translation...
             </div>
           )}
-          
+
           <div ref={messagesEndRef} />
         </div>
 
         {/* Chat Input */}
         <div style={{ padding: '20px', position: 'relative', display: 'flex', gap: '12px' }}>
           <div style={{ position: 'absolute', top: 0, left: '5%', right: '5%', height: '1px', background: 'linear-gradient(90deg, transparent, var(--color-secondary), transparent)', opacity: 0.5 }}></div>
-          <input 
-            type="text" 
-            placeholder="Send a transmission..." 
-            style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', padding: '10px 16px', color: 'white' }} 
+          <input
+            type="text"
+            placeholder="Send a transmission..."
+            style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', padding: '10px 16px', color: 'white' }}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
@@ -202,8 +202,8 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
             }}
             disabled={isTranslating}
           />
-          <button 
-            className="btn-primary" 
+          <button
+            className="btn-primary"
             onClick={handleSendMessage}
             disabled={!inputValue.trim() || isTranslating}
           >
