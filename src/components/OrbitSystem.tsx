@@ -32,7 +32,7 @@ export default function OrbitSystem() {
           position: absolute;
           top: 50%;
           left: 50%;
-          border: 1px dashed rgba(217, 3, 104, 0.2);
+          border: 3px dashed rgba(217, 3, 104, 0.2);
           border-radius: 50%;
           transform: translate(-50%, -50%);
           pointer-events: none;
@@ -47,18 +47,25 @@ export default function OrbitSystem() {
           height: 60px;
           border-radius: 50%;
           cursor: pointer;
-          transition: transform 0.2s;
+          animation: orbit var(--duration) linear infinite;
+        }
+        .orbit-avatar {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
           box-shadow: 0 0 15px rgba(234, 222, 218, 0.2);
           border: 2px solid var(--color-primary);
           background-size: cover;
           background-position: center;
-          animation: orbit var(--duration) linear infinite;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .orbit-item:hover {
-          transform: scale(1.2) !important;
           z-index: 50;
-          box-shadow: 0 0 25px var(--color-secondary);
           animation-play-state: paused;
+        }
+        .orbit-item:hover .orbit-avatar {
+          transform: scale(1.2);
+          box-shadow: 0 0 25px var(--color-secondary);
         }
       `}</style>
 
@@ -100,14 +107,15 @@ export default function OrbitSystem() {
                 className="orbit-item"
                 onClick={() => setSelectedAlien(alien)}
                 style={{
-                  backgroundImage: `url(${alien.profilePic})`,
                   // @ts-ignore
                   '--radius': `${radius}px`,
                   '--duration': `${duration}s`,
                   animationDelay: `-${startAngle}s` // Stagger start positions
                 }}
                 title={`${alien.name} (${alien.distanceAU} AU)`}
-              />
+              >
+                <div className="orbit-avatar" style={{ backgroundImage: `url(${alien.profilePic})` }} />
+              </div>
             </div>
           );
         })}
