@@ -19,9 +19,19 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
   const warnings = getScientificWarnings(alien);
   const warnedLabels = new Set(warnings.map(w => w.label.toLowerCase()));
 
-  // Helper: return red/orange border colour if a stat is flagged
+  // Helper: return red/orange border colour if a stat is flagged by keyword match
   const dangerFor = (key: string) => {
     const w = warnings.find(w => w.label.toLowerCase().includes(key.toLowerCase()));
+    if (!w) return 'rgba(234, 222, 218, 0.1)';
+    return w.severity === 'danger' ? 'rgba(220, 38, 38, 0.6)' : 'rgba(245, 158, 11, 0.6)';
+  };
+
+  // Dedicated temperature check — catches all heat/cold warning labels
+  const dangerForTemp = () => {
+    const tempKeywords = ['heat', 'hot', 'cold', 'temperature'];
+    const w = warnings.find(w =>
+      tempKeywords.some(k => w.label.toLowerCase().includes(k))
+    );
     if (!w) return 'rgba(234, 222, 218, 0.1)';
     return w.severity === 'danger' ? 'rgba(220, 38, 38, 0.6)' : 'rgba(245, 158, 11, 0.6)';
   };
@@ -175,7 +185,7 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-primary)' }}>{alien.oxygenPercent}%</div>
               <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>Atmospheric Oxygen</div>
             </div>
-            <div className="glass-panel" style={{ padding: '16px', textAlign: 'center', border: `1px solid ${dangerFor('temperature') || dangerFor('heat') || dangerFor('cold')}` }}>
+            <div className="glass-panel" style={{ padding: '16px', textAlign: 'center', border: `1px solid ${dangerForTemp()}` }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                 <Thermometer size={20} />{alien.homeTemperatureC.toLocaleString()}°C
               </div>

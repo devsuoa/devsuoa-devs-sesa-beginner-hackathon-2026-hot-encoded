@@ -353,7 +353,10 @@ export default function OrbitSystem() {
         <ScientificWarningModal
           alien={pendingMatchAlien}
           onProceed={() => confirmMatch(pendingMatchAlien)}
-          onCancel={() => setPendingMatchAlien(null)}
+          onCancel={() => {
+            handleDismiss(pendingMatchAlien);
+            setPendingMatchAlien(null);
+          }}
         />
       )}
 
