@@ -3,12 +3,12 @@ import { mockAliens } from '../data/mockAliens';
 import type { AlienProfile } from '../data/mockAliens';
 import { useAppContext } from '../context/AppContext';
 import ProfileModal from './ProfileModal';
-import MatchOverlay from './MatchOverlay';
+import { useRocketNav } from '../context/TransitionContext';
 
 export default function OrbitSystem() {
   const { preferences, addMatch, matches } = useAppContext();
+  const triggerRocketNav = useRocketNav();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
-  const [matchedAlien, setMatchedAlien] = useState<AlienProfile | null>(null);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   
   // Keep exactly 5 slots for the 5 orbit tracks
@@ -55,7 +55,7 @@ export default function OrbitSystem() {
   const handleMatch = (alien: AlienProfile) => {
     addMatch(alien);
     setSelectedAlien(null);
-    setMatchedAlien(alien);
+    triggerRocketNav(`/chat/${alien.id}`, { alienImg: alien.profilePic });
   };
 
   const handleDismiss = (alien: AlienProfile) => {
@@ -188,12 +188,6 @@ export default function OrbitSystem() {
         />
       )}
 
-      {matchedAlien && (
-        <MatchOverlay 
-          alien={matchedAlien} 
-          userName={preferences.name || 'User'} 
-        />
-      )}
     </>
   );
 }
