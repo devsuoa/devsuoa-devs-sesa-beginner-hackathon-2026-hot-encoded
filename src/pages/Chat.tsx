@@ -14,6 +14,16 @@ const ALIEN_RESPONSES = [
   "Are you emitting pheromones or is my atmospheric analyzer malfunctioning?",
 ];
 
+const TRANSLATOR_GLITCH_RESPONSES = [
+  "You are very shiny to my eyes. I forget how to speak my own moon language.",
+  "My heart thumps like a heavy moon-rock when I see your handsome face.",
+  "You are the premium human. My thoughts are messy like a asteroid belt.",
+  "Your smile is very bright. It makes me feel warm in my squishy parts.",
+  "I am looking at you so much that I forgot to breathe my air mixture.",
+  "You are very precious. Like a rare planet-crystal from the deep pits.",
+  "My antenna are doing the happy dance. You are very good looking today."
+];
+
 type Message = {
   id: string;
   sender: 'user' | 'alien';
@@ -81,7 +91,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         const data = await response.json();
         if (data.error) {
           console.error("Gemini API Error:", data.error);
-          return `[TRANSLATOR ERROR: ${data.error.message || "Invalid API parameters"}]`;
+          return TRANSLATOR_GLITCH_RESPONSES[Math.floor(Math.random() * TRANSLATOR_GLITCH_RESPONSES.length)];
         }
 
         if (data && data.candidates && data.candidates.length > 0) {
@@ -89,7 +99,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         }
       } catch (e) {
         console.error("AI translation failed:", e);
-        return "[TRANSLATOR COMMUNICATION FAILURE: Unable to reach Gemini backend. Did you restart the server?]";
+        return TRANSLATOR_GLITCH_RESPONSES[Math.floor(Math.random() * TRANSLATOR_GLITCH_RESPONSES.length)];
       }
     }
     
