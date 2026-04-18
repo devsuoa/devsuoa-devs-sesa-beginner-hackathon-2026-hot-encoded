@@ -242,7 +242,7 @@ export default function OrbitSystem() {
           const ry = 80 + (i * 40);
           const duration = 15 + (i * 8);
 
-          const delay = -1 * (i * (duration / 5));
+
 
           return (
             <div key={`track-${i}-${alien.id}`}>

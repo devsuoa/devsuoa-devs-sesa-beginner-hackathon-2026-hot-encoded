@@ -168,7 +168,7 @@ export default function UserProfileWidget() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
                 <Target size={13} style={{ color: 'var(--color-secondary)', flexShrink: 0 }} />
                 <span style={{ opacity: 0.8 }}>Max distance:</span>
-                <span style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>{preferences.maxDistanceAU} AU</span>
+                <span style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>{preferences.maxDistanceLY} LY</span>
               </div>
             </div>
           </div>
