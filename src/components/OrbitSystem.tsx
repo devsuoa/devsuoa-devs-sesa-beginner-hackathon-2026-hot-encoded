@@ -5,13 +5,14 @@ import { mockAliens } from '../data/mockAliens';
 import type { AlienProfile } from '../data/mockAliens';
 import { useAppContext } from '../context/AppContext';
 import ProfileModal from './ProfileModal';
-import MatchOverlay from './MatchOverlay';
+import { getCompatibility } from '../utils/compatibility';
+import { useRocketNav } from '../context/TransitionContext';
 
 export default function OrbitSystem() {
   const navigate = useNavigate();
   const { preferences, addMatch, matches } = useAppContext();
+  const triggerRocketNav = useRocketNav();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
-  const [matchedAlien, setMatchedAlien] = useState<AlienProfile | null>(null);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   const [showBreakingAnim, setShowBreakingAnim] = useState(false);
   const [animStage, setAnimStage] = useState<'none' | 'heart' | 'break' | 'final'>('none');
@@ -29,6 +30,10 @@ export default function OrbitSystem() {
       !dismissedIds.has(a.id) &&
       !activeIds.includes(a.id)
     );
+
+    // Sort available aliens by compatibility descending, so the queue is ordered
+    // from highest match to lowest match. The next alien pulled will always be the highest remaining match.
+    available.sort((a, b) => getCompatibility(b, preferences) - getCompatibility(a, preferences));
 
     let changed = false;
     const newActiveIds = [...activeIds];
@@ -69,7 +74,7 @@ export default function OrbitSystem() {
   const handleMatch = (alien: AlienProfile) => {
     addMatch(alien);
     setSelectedAlien(null);
-    setMatchedAlien(alien);
+    triggerRocketNav(`/chat/${alien.id}`, { alienImg: alien.profilePic });
   };
 
   const handleDismiss = (alien: AlienProfile) => {
@@ -78,10 +83,28 @@ export default function OrbitSystem() {
       newSet.add(alien.id);
       return newSet;
     });
-    setSelectedAlien(null);
+
+    // Find the next available alien in activeIds
+    const currentIndex = activeIds.indexOf(alien.id);
+    let nextId = null;
+    if (currentIndex >= 0) {
+      for(let i=1; i<5; i++) {
+        const candidate = activeIds[(currentIndex + i) % 5];
+        if (candidate && candidate !== alien.id) {
+          nextId = candidate;
+          break;
+        }
+      }
+    }
+
+    if (nextId) {
+      const nextAlien = mockAliens.find(a => a.id === nextId);
+      setSelectedAlien(nextAlien || null);
+    } else {
+      setSelectedAlien(null);
+    }
   };
 
-  const visibleAliens = mockAliens.filter(a => activeIds.includes(a.id));
 
   return (
     <>
@@ -173,11 +196,12 @@ export default function OrbitSystem() {
         )}
 
         {/* Orbit Rings and Aliens */}
-        {activeIds.map((id, i) => {
-          if (!id) return null; // If no alien is available for this slot, don't render it
-
-          const alien = mockAliens.find(a => a.id === id);
-          if (!alien) return null;
+        {activeIds
+          .map(id => id ? mockAliens.find(a => a.id === id) : null)
+          .filter((a): a is AlienProfile => a !== null && a !== undefined)
+          // Sort by compatibility descending so the highest match is in the innermost track
+          .sort((a, b) => getCompatibility(b, preferences) - getCompatibility(a, preferences))
+          .map((alien, i) => {
 
           // Assign each slot to a distinct track (0 to 4)
           const rx = 120 + (i * 65);
@@ -291,12 +315,6 @@ export default function OrbitSystem() {
         />
       )}
 
-      {matchedAlien && (
-        <MatchOverlay
-          alien={matchedAlien}
-          userName={preferences.name || 'User'}
-        />
-      )}
     </>
   );
 }

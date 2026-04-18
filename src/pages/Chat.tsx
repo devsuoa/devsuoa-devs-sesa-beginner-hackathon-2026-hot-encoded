@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { useAppContext } from '../context/AppContext';
+import { X } from 'lucide-react';
 
 // Mock AI responses as fallback
 const ALIEN_RESPONSES = [
@@ -11,6 +12,16 @@ const ALIEN_RESPONSES = [
   "Interesting. Most species on my planet communicate via scent-gland excretion. Your vocal vibrations are... quaint.",
   "Warning: Your bio-signature is dangerously attractive. Please lower your gravitational pull.",
   "Are you emitting pheromones or is my atmospheric analyzer malfunctioning?",
+];
+
+const TRANSLATOR_GLITCH_RESPONSES = [
+  "You are very shiny to my eyes. I forget how to speak my own moon language.",
+  "My heart thumps like a heavy moon-rock when I see your handsome face.",
+  "You are the premium human. My thoughts are messy like a asteroid belt.",
+  "Your smile is very bright. It makes me feel warm in my squishy parts.",
+  "I am looking at you so much that I forgot to breathe my air mixture.",
+  "You are very precious. Like a rare planet-crystal from the deep pits.",
+  "My antenna are doing the happy dance. You are very good looking today."
 ];
 
 type Message = {
@@ -80,7 +91,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         const data = await response.json();
         if (data.error) {
           console.error("Gemini API Error:", data.error);
-          return `[TRANSLATOR ERROR: ${data.error.message || "Invalid API parameters"}]`;
+          return TRANSLATOR_GLITCH_RESPONSES[Math.floor(Math.random() * TRANSLATOR_GLITCH_RESPONSES.length)];
         }
 
         if (data && data.candidates && data.candidates.length > 0) {
@@ -88,7 +99,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         }
       } catch (e) {
         console.error("AI translation failed:", e);
-        return "[TRANSLATOR COMMUNICATION FAILURE: Unable to reach Gemini backend. Did you restart the server?]";
+        return TRANSLATOR_GLITCH_RESPONSES[Math.floor(Math.random() * TRANSLATOR_GLITCH_RESPONSES.length)];
       }
     }
 
@@ -138,8 +149,24 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
 
   return (
     <div style={{ width: '100%', maxWidth: '800px', margin: '20px auto', padding: '0 20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div className="glass-panel" style={{ backgroundColor: '#1a1829', border: 'none', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
-
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+        <Link to="/explore" style={{ 
+          color: 'var(--color-primary)', 
+          textDecoration: 'none', 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '4px', 
+          fontSize: '0.9rem',
+          fontWeight: 'bold',
+          padding: '6px 12px',
+          borderRadius: '20px',
+          background: 'rgba(217, 3, 104, 0.1)',
+          border: '1px solid var(--color-primary)'
+        }}>
+          <X size={16} /> Exit
+        </Link>
+      </div>
+      <div className="glass-panel" style={{ backgroundColor: '#1a1829', border: 'none', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 160px)' }}>
         {/* Chat Header */}
         <div style={{ padding: '20px', position: 'relative', display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ position: 'absolute', bottom: 0, left: '5%', right: '5%', height: '1px', background: 'linear-gradient(90deg, transparent, var(--color-secondary), transparent)', opacity: 0.5 }}></div>

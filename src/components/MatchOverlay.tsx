@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import type { AlienProfile } from '../data/mockAliens';
-import { useNavigate } from 'react-router';
 import { Heart } from 'lucide-react';
+import { useRocketNav } from '../context/TransitionContext';
 
 interface MatchOverlayProps {
   alien: AlienProfile;
@@ -9,15 +9,15 @@ interface MatchOverlayProps {
 }
 
 export default function MatchOverlay({ alien, userName }: MatchOverlayProps) {
-  const navigate = useNavigate();
+  const triggerRocketNav = useRocketNav();
 
   useEffect(() => {
-    // Automatically redirect to chat after 3 seconds
+    // Trigger rocket navigation after 2 seconds (giving time to see the match)
     const timer = setTimeout(() => {
-      navigate(`/chat/${alien.id}`);
-    }, 3000);
+      triggerRocketNav(`/chat/${alien.id}`);
+    }, 2000);
     return () => clearTimeout(timer);
-  }, [navigate, alien.id]);
+  }, [triggerRocketNav, alien.id]);
 
   return (
     <div style={{

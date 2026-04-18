@@ -23,7 +23,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-1",
     name: "Glaxion",
-    alienType: "Neon Synth",
+    alienType: "Alien",
     limbs: 4,
     size: "Medium",
     distanceLY: 4.2,
@@ -39,7 +39,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-2",
     name: "Zorblax",
-    alienType: "Aquatic Siren",
+    alienType: "Alien",
     limbs: 8,
     size: "Small",
     distanceLY: 12.8,
@@ -55,7 +55,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-3",
     name: "Vex'tar",
-    alienType: "Draconian",
+    alienType: "Alien",
     limbs: 4,
     size: "Large",
     distanceLY: 1.5,
@@ -71,7 +71,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-4",
     name: "Crystalia",
-    alienType: "Crystalline Entity",
+    alienType: "Alien",
     limbs: 4,
     size: "Medium",
     distanceLY: 25.4,
@@ -87,7 +87,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-5",
     name: "Spore'rel",
-    alienType: "Fungal Sporeling",
+    alienType: "Alien",
     limbs: 6,
     size: "Small",
     distanceLY: 8.9,
@@ -103,7 +103,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-6",
     name: "Lyra",
-    alienType: "Plasma Being",
+    alienType: "Alien",
     limbs: 0,
     size: "Medium",
     distanceLY: 55.0,
@@ -119,7 +119,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-7",
     name: "Lumina",
-    alienType: "Celestial Guide",
+    alienType: "Hybrid",
     limbs: 4,
     size: "Large",
     distanceLY: 12.4,
@@ -135,7 +135,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-8",
     name: "Zarok",
-    alienType: "High Councilor",
+    alienType: "Hybrid",
     limbs: 4,
     size: "Medium",
     distanceLY: 8.1,
@@ -151,7 +151,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-9",
     name: "Squish",
-    alienType: "Forest Slime",
+    alienType: "Alien",
     limbs: 0,
     size: "Small",
     distanceLY: 3.3,
@@ -167,7 +167,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-10",
     name: "Xeno",
-    alienType: "Apex Predator",
+    alienType: "Alien",
     limbs: 4,
     size: "Colossal",
     distanceLY: 35.0,
@@ -183,7 +183,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-11",
     name: "Cyra",
-    alienType: "Void Walker",
+    alienType: "Hybrid",
     limbs: 4,
     size: "Medium",
     distanceLY: 66.6,
@@ -199,7 +199,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-12",
     name: "Ignis",
-    alienType: "Royal Envoy",
+    alienType: "Human",
     limbs: 4,
     size: "Medium",
     distanceLY: 2.1,
@@ -215,7 +215,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-13",
     name: "Sparky",
-    alienType: "Luminous Sprite",
+    alienType: "Alien",
     limbs: 4,
     size: "Small",
     distanceLY: 18.9,
@@ -231,7 +231,7 @@ export const mockAliens: AlienProfile[] = [
   {
     id: "alien-14",
     name: "Kaelen",
-    alienType: "Jungle Prince",
+    alienType: "Human",
     limbs: 4,
     size: "Medium",
     distanceLY: 9.5,

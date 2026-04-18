@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react';
 import type { AlienProfile } from '../data/mockAliens';
 import { X, Heart, Info, Globe, Wind } from 'lucide-react';
+import { useAppContext } from '../context/AppContext';
+import { getCompatibility } from '../utils/compatibility';
 
 interface ProfileModalProps {
   alien: AlienProfile;
@@ -9,8 +12,40 @@ interface ProfileModalProps {
 }
 
 export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: ProfileModalProps) {
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const { preferences } = useAppContext();
+  const compatibility = getCompatibility(alien, preferences);
+
+  useEffect(() => {
+    setSwipeDirection(null);
+  }, [alien.id]);
+
+  const handleMatch = () => {
+    setSwipeDirection('right');
+    setTimeout(() => onMatch(alien), 300);
+  };
+
+  const handleDismiss = () => {
+    setSwipeDirection('left');
+    setTimeout(() => onDismiss(alien), 300);
+  };
+
   return (
-    <div style={{
+    <>
+      <style>{`
+        .swipe-card {
+          transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .swipe-card.left {
+          transform: translateX(-150%) rotate(-15deg);
+          opacity: 0;
+        }
+        .swipe-card.right {
+          transform: translateX(150%) rotate(15deg);
+          opacity: 0;
+        }
+      `}</style>
+      <div style={{
       position: 'fixed',
       top: 0, left: 0, right: 0, bottom: 0,
       backgroundColor: 'rgba(15, 23, 42, 0.8)',
@@ -21,13 +56,30 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
       zIndex: 1000,
       padding: '20px'
     }}>
-      <div className="glass-panel" style={{
-        maxWidth: '500px',
-        width: '100%',
-        maxHeight: '90vh',
-        overflowY: 'auto',
-        position: 'relative'
-      }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '24px', width: '100%', maxWidth: '700px', justifyContent: 'center' }}>
+        
+        {/* Reject Button */}
+        <button 
+          onClick={handleDismiss}
+          style={{
+            width: '60px', height: '60px', borderRadius: '50%',
+            background: 'rgba(46, 41, 78, 0.8)', border: '2px solid var(--color-white)',
+            color: 'var(--color-white)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', transition: 'all 0.2s ease', flexShrink: 0
+          }}
+          onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <X size={28} />
+        </button>
+
+        <div className={`glass-panel swipe-card ${swipeDirection || ''}`} style={{
+          maxWidth: '500px',
+          width: '100%',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          position: 'relative'
+        }}>
         <button 
           onClick={onClose}
           style={{
@@ -71,13 +123,13 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
             
             {/* Compatibility Badge */}
             <div style={{ 
-              background: `linear-gradient(135deg, ${alien.compatibilityPercent >= 80 ? 'var(--color-primary), var(--color-secondary)' : 'rgba(234, 222, 218, 0.2), rgba(234, 222, 218, 0.1)'})`,
+              background: `linear-gradient(135deg, ${compatibility >= 80 ? 'var(--color-primary), var(--color-secondary)' : 'rgba(234, 222, 218, 0.2), rgba(234, 222, 218, 0.1)'})`,
               padding: '8px 16px', 
               borderRadius: '20px',
               fontWeight: 'bold',
-              boxShadow: alien.compatibilityPercent >= 80 ? '0 4px 15px rgba(217, 3, 104, 0.4)' : 'none'
+              boxShadow: compatibility >= 80 ? '0 4px 15px rgba(217, 3, 104, 0.4)' : 'none'
             }}>
-              {alien.compatibilityPercent.toFixed(1)}% Match
+              {compatibility.toFixed(1)}% Match
             </div>
           </div>
 
@@ -118,38 +170,26 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '24px' }}>
-            <button 
-              onClick={() => onDismiss(alien)}
-              style={{
-                width: '60px', height: '60px', borderRadius: '50%',
-                background: 'rgba(46, 41, 78, 0.8)', border: '2px solid var(--color-white)',
-                color: 'var(--color-white)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', transition: 'all 0.2s ease'
-              }}
-              onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
-              onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
-            >
-              <X size={28} />
-            </button>
-            
-            <button 
-              onClick={() => onMatch(alien)}
-              style={{
-                width: '60px', height: '60px', borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))', border: 'none',
-                color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 15px rgba(217, 3, 104, 0.5)',
-                cursor: 'pointer', transition: 'all 0.2s ease'
-              }}
-              onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
-              onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
-            >
-              <Heart size={28} fill="white" />
-            </button>
           </div>
         </div>
+        
+        {/* Match Button */}
+        <button 
+          onClick={handleMatch}
+          style={{
+            width: '60px', height: '60px', borderRadius: '50%',
+            background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))', border: 'none',
+            color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 4px 15px rgba(217, 3, 104, 0.5)',
+            cursor: 'pointer', transition: 'all 0.2s ease', flexShrink: 0
+          }}
+          onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <Heart size={28} fill="white" />
+        </button>
       </div>
     </div>
+    </>
   );
 }
