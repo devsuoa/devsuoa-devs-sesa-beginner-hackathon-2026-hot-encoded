@@ -33,7 +33,17 @@ export default function Preferences() {
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '40px auto', padding: '0 20px' }}>
+    <div style={{ 
+      width: '100%', 
+      height: '100%', 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'flex-start', 
+      overflowY: 'auto', 
+      padding: '40px 20px', 
+      boxSizing: 'border-box'
+    }}>
+      <div style={{ width: '100%', maxWidth: '500px', paddingTop: '40px' }}>
       <div className="glass-panel" style={{ padding: '32px' }}>
         <h1 style={{ textAlign: 'center', marginBottom: '24px', color: 'var(--color-secondary)' }}>Your Preferences</h1>
         <p style={{ textAlign: 'center', marginBottom: '32px', color: 'rgba(234, 222, 218, 0.8)' }}>
@@ -96,5 +106,6 @@ export default function Preferences() {
         </form>
       </div>
     </div>
+  </div>
   );
 }

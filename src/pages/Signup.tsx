@@ -112,178 +112,190 @@ export default function Signup() {
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: '600px', padding: '20px', boxSizing: 'border-box' }}>
-      <div className="glass-panel" style={{ padding: '40px' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '24px', color: 'var(--color-secondary)' }}>Welcome to SSTRUK</h1>
-        <p style={{ textAlign: 'center', marginBottom: '32px', color: 'rgba(234, 222, 218, 0.8)', fontWeight: 'bold', fontSize: '1.1rem' }}>
-          Enter your details
-        </p>
-        
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ 
+      width: '100%', 
+      height: '100%', 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'flex-start', 
+      overflowY: 'auto', 
+      padding: '40px 20px', 
+      boxSizing: 'border-box'
+    }}>
+      <div style={{ width: '100%', maxWidth: '600px', paddingTop: '40px' }}>
+        <div className="glass-panel" style={{ padding: '40px' }}>
+          <h1 style={{ textAlign: 'center', marginBottom: '24px', color: 'var(--color-secondary)' }}>Welcome to SSTRUK</h1>
+          <p style={{ textAlign: 'center', marginBottom: '32px', color: 'rgba(234, 222, 218, 0.8)', fontWeight: 'bold', fontSize: '1.1rem' }}>
+            Enter your details
+          </p>
           
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-            <div 
-              onClick={handlePhotoClick}
-              onMouseEnter={() => setIsHoveringPhoto(true)}
-              onMouseLeave={() => setIsHoveringPhoto(false)}
-              style={{ 
-                width: '100px', 
-                height: '100px', 
-                borderRadius: '50%', 
-                backgroundColor: 'rgba(255,255,255,0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                border: formData.profilePic ? 'none' : '2px dashed rgba(255,255,255,0.3)',
-                overflow: 'hidden',
-                position: 'relative'
-              }}
-            >
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                style={{ display: 'none' }} 
-                accept="image/*"
-                onChange={handlePhotoChange}
-              />
-              {formData.profilePic ? (
-                <>
-                  <img src={formData.profilePic} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  {isHoveringPhoto && (
-                    <div 
-                      style={{
-                        position: 'absolute',
-                        top: 0, left: 0, right: 0, bottom: 0,
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <button 
-                        onClick={handleDeletePhoto}
-                        type="button"
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+              <div 
+                onClick={handlePhotoClick}
+                onMouseEnter={() => setIsHoveringPhoto(true)}
+                onMouseLeave={() => setIsHoveringPhoto(false)}
+                style={{ 
+                  width: '100px', 
+                  height: '100px', 
+                  borderRadius: '50%', 
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  border: formData.profilePic ? 'none' : '2px dashed rgba(255,255,255,0.3)',
+                  overflow: 'hidden',
+                  position: 'relative'
+                }}
+              >
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  style={{ display: 'none' }} 
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                />
+                {formData.profilePic ? (
+                  <>
+                    <img src={formData.profilePic} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {isHoveringPhoto && (
+                      <div 
                         style={{
-                          background: 'none',
-                          border: 'none',
-                          color: '#ff4d4d',
-                          cursor: 'pointer',
-                          padding: '8px'
+                          position: 'absolute',
+                          top: 0, left: 0, right: 0, bottom: 0,
+                          backgroundColor: 'rgba(0,0,0,0.5)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
                         }}
                       >
-                        <Trash2 size={24} />
-                      </button>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <span style={{ fontSize: '0.8rem', textAlign: 'center', color: 'rgba(255,255,255,0.6)' }}>
-                  Add profile photo
-                </span>
-              )}
+                        <button 
+                          onClick={handleDeletePhoto}
+                          type="button"
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: '#ff4d4d',
+                            cursor: 'pointer',
+                            padding: '8px'
+                          }}
+                        >
+                          <Trash2 size={24} />
+                        </button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <span style={{ fontSize: '0.8rem', textAlign: 'center', color: 'rgba(255,255,255,0.6)' }}>
+                    Add profile photo
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Your Name:</label>
-            <input required type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
-          </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Age (Earth Years):</label>
-              <input type="number" min="0" name="age" value={formData.age} onChange={handleChange} placeholder="e.g. 24" />
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Your Name:</label>
+              <input required type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
             </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Age (Earth Years):</label>
+                <input type="number" min="0" name="age" value={formData.age} onChange={handleChange} placeholder="e.g. 24" />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Species:</label>
+                <input type="text" name="species" value={formData.species} onChange={handleChange} placeholder="Type your species" />
+              </div>
+            </div>
+
             <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Species:</label>
-              <input type="text" name="species" value={formData.species} onChange={handleChange} placeholder="Type your species" />
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Planet:</label>
+              <input type="text" name="planet" value={formData.planet} onChange={handleChange} placeholder="e.g. Earth" />
             </div>
-          </div>
+            
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Bio:</label>
+              <textarea 
+                name="bio" 
+                value={formData.bio} 
+                onChange={handleChange} 
+                placeholder="What do you want the solar system to know about you?"
+                style={{ 
+                  width: '100%', 
+                  padding: '12px', 
+                  borderRadius: '8px', 
+                  backgroundColor: 'rgba(255, 255, 255, 0.05)', 
+                  border: '1px solid rgba(255, 255, 255, 0.1)', 
+                  color: 'white',
+                  minHeight: '80px',
+                  fontFamily: 'inherit',
+                  resize: 'none'
+                }} 
+              />
+            </div>
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Planet:</label>
-            <input type="text" name="planet" value={formData.planet} onChange={handleChange} placeholder="e.g. Earth" />
-          </div>
-          
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Bio:</label>
-            <textarea 
-              name="bio" 
-              value={formData.bio} 
-              onChange={handleChange} 
-              placeholder="What do you want the solar system to know about you?"
-              style={{ 
-                width: '100%', 
-                padding: '12px', 
-                borderRadius: '8px', 
-                backgroundColor: 'rgba(255, 255, 255, 0.05)', 
-                border: '1px solid rgba(255, 255, 255, 0.1)', 
-                color: 'white',
-                minHeight: '80px',
-                fontFamily: 'inherit'
-              }} 
-            />
-          </div>
-
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <label style={{ fontSize: '0.9rem' }}>Interests:</label>
-              <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.7)' }}>Up to 3</span>
-            </div>
-            <input
-              type="text"
-              value={interestInput}
-              onChange={e => setInterestInput(e.target.value)}
-              onKeyDown={handleInterestKeyDown}
-              placeholder="Type an interest and press Enter"
-            />
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', margin: '12px 0' }}>
-              {formData.interests.map(interest => (
-                <button
-                  type="button"
-                  key={interest}
-                  onClick={() => removeInterest(interest)}
-                  style={{
-                    padding: '8px 12px',
-                    borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.08)',
-                    color: 'white',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {interest} ×
-                </button>
-              ))}
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {interestSuggestions
-                .filter(suggestion => !formData.interests.includes(suggestion))
-                .map(suggestion => (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <label style={{ fontSize: '0.9rem' }}>Interests:</label>
+                <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.7)' }}>Up to 3</span>
+              </div>
+              <input
+                type="text"
+                value={interestInput}
+                onChange={e => setInterestInput(e.target.value)}
+                onKeyDown={handleInterestKeyDown}
+                placeholder="Type an interest and press Enter"
+              />
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', margin: '12px 0' }}>
+                {formData.interests.map(interest => (
                   <button
                     type="button"
-                    key={suggestion}
-                    onClick={() => addInterest(suggestion)}
+                    key={interest}
+                    onClick={() => removeInterest(interest)}
                     style={{
                       padding: '8px 12px',
                       borderRadius: '999px',
                       border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'rgba(255,255,255,0.05)',
-                      color: 'rgba(234, 222, 218, 0.9)',
+                      background: 'rgba(255,255,255,0.08)',
+                      color: 'white',
                       cursor: 'pointer'
                     }}
                   >
-                    {suggestion}
+                    {interest} ×
                   </button>
-              ))}
+                ))}
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {interestSuggestions
+                  .filter(suggestion => !formData.interests.includes(suggestion))
+                  .map(suggestion => (
+                    <button
+                      type="button"
+                      key={suggestion}
+                      onClick={() => addInterest(suggestion)}
+                      style={{
+                        padding: '8px 12px',
+                        borderRadius: '999px',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        background: 'rgba(255,255,255,0.05)',
+                        color: 'rgba(234, 222, 218, 0.9)',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {suggestion}
+                    </button>
+                ))}
+              </div>
             </div>
-          </div>
-          
-          <div style={{ marginTop: '16px' }}>
-            <button type="submit" className="btn-primary" style={{ width: '100%' }}>Next</button>
-          </div>
-        </form>
+            
+            <div style={{ marginTop: '16px' }}>
+              <button type="submit" className="btn-primary" style={{ width: '100%' }}>Next</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
