@@ -24,6 +24,12 @@ const TRANSLATOR_GLITCH_RESPONSES = [
   "My antenna are doing the happy dance. You are very good looking today."
 ];
 
+const LOADING_MESSAGES = [
+  "Translating message...",
+  "Sending message...",
+  "Receiving message..."
+];
+
 type Message = {
   id: string;
   sender: 'user' | 'alien';
@@ -37,6 +43,7 @@ export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const alien = matches.find(m => m.id === id);
@@ -48,6 +55,17 @@ export default function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTranslating]);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    if (isTranslating) {
+      setLoadingStep(0);
+      interval = setInterval(() => {
+        setLoadingStep(s => (s + 1) % LOADING_MESSAGES.length);
+      }, 1200);
+    }
+    return () => clearInterval(interval);
+  }, [isTranslating]);
 
   // Simulate an AI or API call to get the alien's response
   const generateAlienResponse = async (userText: string, currentMessages: Message[]) => {
@@ -121,7 +139,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
     setIsTranslating(true);
 
     // Simulate "Processing Translation..." delay
-    const delay = Math.floor(Math.random() * 1500) + 1500; // 1.5s - 3.0s delay
+    const delay = Math.floor(Math.random() * 1500) + 3500; // 3.5s - 5.0s delay
     
     setTimeout(async () => {
       // Pass the previous messages list array AND the new user message
@@ -209,7 +227,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
           {isTranslating && (
             <div style={{ alignSelf: 'flex-start', color: 'var(--color-secondary)', fontSize: '0.9rem', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid var(--color-secondary)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></span>
-              Processing Translation...
+              {LOADING_MESSAGES[loadingStep]}
             </div>
           )}
           
