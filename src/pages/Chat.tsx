@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { useAppContext } from '../context/AppContext';
+import { X } from 'lucide-react';
 
 // Mock AI responses as fallback
 const ALIEN_RESPONSES = [
@@ -138,7 +139,24 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
 
   return (
     <div style={{ width: '100%', maxWidth: '800px', margin: '20px auto', padding: '0 20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div className="glass-panel" style={{ backgroundColor: '#1a1829', border: 'none', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+        <Link to="/explore" style={{ 
+          color: 'var(--color-primary)', 
+          textDecoration: 'none', 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '4px', 
+          fontSize: '0.9rem',
+          fontWeight: 'bold',
+          padding: '6px 12px',
+          borderRadius: '20px',
+          background: 'rgba(217, 3, 104, 0.1)',
+          border: '1px solid var(--color-primary)'
+        }}>
+          <X size={16} /> Exit
+        </Link>
+      </div>
+      <div className="glass-panel" style={{ backgroundColor: '#1a1829', border: 'none', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 160px)' }}>
         
         {/* Chat Header */}
         <div style={{ padding: '20px', position: 'relative', display: 'flex', alignItems: 'center', gap: '16px' }}>
