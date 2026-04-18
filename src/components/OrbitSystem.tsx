@@ -95,9 +95,25 @@ export default function OrbitSystem() {
   return (
     <>
       <style>{`
-        @keyframes orbit {
+        @keyframes orbit-0 {
           from { offset-distance: 0%; }
           to   { offset-distance: 100%; }
+        }
+        @keyframes orbit-1 {
+          from { offset-distance: 20%; }
+          to   { offset-distance: 120%; }
+        }
+        @keyframes orbit-2 {
+          from { offset-distance: 40%; }
+          to   { offset-distance: 140%; }
+        }
+        @keyframes orbit-3 {
+          from { offset-distance: 60%; }
+          to   { offset-distance: 160%; }
+        }
+        @keyframes orbit-4 {
+          from { offset-distance: 80%; }
+          to   { offset-distance: 180%; }
         }
         .orbit-ring {
           position: absolute;
@@ -118,7 +134,9 @@ export default function OrbitSystem() {
           cursor: pointer;
           offset-path: ellipse(var(--rx) var(--ry) at 50% 50%);
           offset-rotate: 0deg;
-          animation: orbit var(--duration) linear infinite;
+          animation-duration: var(--duration);
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
         .orbit-avatar {
           width: 100%;
@@ -192,7 +210,7 @@ export default function OrbitSystem() {
                   '--rx': `${rx}px`,
                   '--ry': `${ry}px`,
                   '--duration': `${duration}s`,
-                  animationDelay: `${delay}s`
+                  animationName: `orbit-${i}`
                 }}
                 title={`${alien.name} (${alien.distanceAU} AU)`}
               >
