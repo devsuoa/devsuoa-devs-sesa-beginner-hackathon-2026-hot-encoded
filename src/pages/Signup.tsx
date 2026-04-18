@@ -30,8 +30,8 @@ export default function Signup() {
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '40px auto', padding: '0 20px' }}>
-      <div className="glass-panel" style={{ padding: '32px' }}>
+    <div style={{ width: '100%', maxWidth: '600px', padding: '20px', boxSizing: 'border-box' }}>
+      <div className="glass-panel" style={{ padding: '40px' }}>
         <h1 style={{ textAlign: 'center', marginBottom: '24px', color: 'var(--color-secondary)' }}>Welcome to SSTRUK</h1>
         <p style={{ textAlign: 'center', marginBottom: '32px', color: 'rgba(234, 222, 218, 0.8)' }}>
           Enter your details and preferences to find your perfect alien match.
