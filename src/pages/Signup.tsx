@@ -27,7 +27,7 @@ export default function Signup() {
     goals: preferences?.goals || 'Long term fusion',
   });
   const [interestInput, setInterestInput] = useState('');
-  const interestSuggestions = ['Stargazing', 'Volcano Diving', 'Heavy Metal (Literally)', 'Asteroid Mining'];
+  const interestSuggestions: any[] = [];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

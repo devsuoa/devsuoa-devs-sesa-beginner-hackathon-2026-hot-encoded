@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { AlienProfile } from '../data/mockAliens';
 
@@ -27,8 +27,24 @@ interface AppContextType {
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [preferences, setPreferencesState] = useState<UserPreferences | null>(null);
-  const [matches, setMatches] = useState<AlienProfile[]>([]);
+  const [preferences, setPreferencesState] = useState<UserPreferences | null>(() => {
+    const saved = localStorage.getItem('aligned_preferences');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [matches, setMatches] = useState<AlienProfile[]>(() => {
+    const saved = localStorage.getItem('aligned_matches');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    if (preferences) {
+      localStorage.setItem('aligned_preferences', JSON.stringify(preferences));
+    }
+  }, [preferences]);
+
+  useEffect(() => {
+    localStorage.setItem('aligned_matches', JSON.stringify(matches));
+  }, [matches]);
 
   const setPreferences = (prefs: UserPreferences) => {
     setPreferencesState(prefs);
