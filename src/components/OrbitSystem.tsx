@@ -4,6 +4,7 @@ import type { AlienProfile } from '../data/mockAliens';
 import { useAppContext } from '../context/AppContext';
 import ProfileModal from './ProfileModal';
 import MatchOverlay from './MatchOverlay';
+import { getCompatibility } from '../utils/compatibility';
 
 export default function OrbitSystem() {
   const { preferences, addMatch, matches } = useAppContext();
@@ -24,6 +25,10 @@ export default function OrbitSystem() {
       !dismissedIds.has(a.id) &&
       !activeIds.includes(a.id)
     );
+
+    // Sort available aliens by compatibility descending, so the queue is ordered
+    // from highest match to lowest match. The next alien pulled will always be the highest remaining match.
+    available.sort((a, b) => getCompatibility(b, preferences) - getCompatibility(a, preferences));
 
     let changed = false;
     const newActiveIds = [...activeIds];
@@ -159,11 +164,12 @@ export default function OrbitSystem() {
         </div>
 
         {/* Orbit Rings and Aliens */}
-        {activeIds.map((id, i) => {
-          if (!id) return null; // If no alien is available for this slot, don't render it
-          
-          const alien = mockAliens.find(a => a.id === id);
-          if (!alien) return null;
+        {activeIds
+          .map(id => id ? mockAliens.find(a => a.id === id) : null)
+          .filter((a): a is AlienProfile => a !== null && a !== undefined)
+          // Sort by compatibility descending so the highest match is in the innermost track
+          .sort((a, b) => getCompatibility(b, preferences) - getCompatibility(a, preferences))
+          .map((alien, i) => {
 
           // Assign each slot to a distinct track (0 to 4)
           const rx = 120 + (i * 65); 

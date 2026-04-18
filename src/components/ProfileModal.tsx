@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import type { AlienProfile } from '../data/mockAliens';
 import { X, Heart, Info, Globe, Wind } from 'lucide-react';
+import { useAppContext } from '../context/AppContext';
+import { getCompatibility } from '../utils/compatibility';
 
 interface ProfileModalProps {
   alien: AlienProfile;
@@ -11,6 +13,8 @@ interface ProfileModalProps {
 
 export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: ProfileModalProps) {
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const { preferences } = useAppContext();
+  const compatibility = getCompatibility(alien, preferences);
 
   useEffect(() => {
     setSwipeDirection(null);
@@ -119,13 +123,13 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
             
             {/* Compatibility Badge */}
             <div style={{ 
-              background: `linear-gradient(135deg, ${alien.compatibilityPercent >= 80 ? 'var(--color-primary), var(--color-secondary)' : 'rgba(234, 222, 218, 0.2), rgba(234, 222, 218, 0.1)'})`,
+              background: `linear-gradient(135deg, ${compatibility >= 80 ? 'var(--color-primary), var(--color-secondary)' : 'rgba(234, 222, 218, 0.2), rgba(234, 222, 218, 0.1)'})`,
               padding: '8px 16px', 
               borderRadius: '20px',
               fontWeight: 'bold',
-              boxShadow: alien.compatibilityPercent >= 80 ? '0 4px 15px rgba(217, 3, 104, 0.4)' : 'none'
+              boxShadow: compatibility >= 80 ? '0 4px 15px rgba(217, 3, 104, 0.4)' : 'none'
             }}>
-              {alien.compatibilityPercent.toFixed(1)}% Match
+              {compatibility.toFixed(1)}% Match
             </div>
           </div>
 
