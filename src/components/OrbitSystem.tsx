@@ -6,6 +6,8 @@ import { useAppContext } from '../context/AppContext';
 import ProfileModal from './ProfileModal';
 import { getCompatibility } from '../utils/compatibility';
 import { useRocketNav } from '../context/TransitionContext';
+import ScientificWarningModal from './ScientificWarningModal';
+import { getScientificWarnings } from '../utils/scienceWarnings';
 
 export default function OrbitSystem() {
 
@@ -13,9 +15,9 @@ export default function OrbitSystem() {
   const triggerRocketNav = useRocketNav();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
-
   const [animStage, setAnimStage] = useState<'none' | 'heart' | 'break' | 'final'>('none');
-
+  const [pendingMatchAlien, setPendingMatchAlien] = useState<AlienProfile | null>(null);
+  
   // Keep exactly 5 slots for the 5 orbit tracks
   const [activeIds, setActiveIds] = useState<(string | null)[]>([null, null, null, null, null]);
 
@@ -71,8 +73,22 @@ export default function OrbitSystem() {
   if (!preferences) return null;
 
   const handleMatch = (alien: AlienProfile) => {
+    const warnings = getScientificWarnings(alien);
+    if (warnings.length > 0) {
+      // Hazards detected — close modal and show warning first
+      setSelectedAlien(null);
+      setPendingMatchAlien(alien);
+    } else {
+      // No hazards — proceed directly
+      addMatch(alien);
+      setSelectedAlien(null);
+      triggerRocketNav(`/chat/${alien.id}`, { alienImg: alien.profilePic });
+    }
+  };
+
+  const confirmMatch = (alien: AlienProfile) => {
     addMatch(alien);
-    setSelectedAlien(null);
+    setPendingMatchAlien(null);
     triggerRocketNav(`/chat/${alien.id}`, { alienImg: alien.profilePic });
   };
 
@@ -108,9 +124,25 @@ export default function OrbitSystem() {
   return (
     <>
       <style>{`
-        @keyframes orbit {
+        @keyframes orbit-0 {
           from { offset-distance: 0%; }
           to   { offset-distance: 100%; }
+        }
+        @keyframes orbit-1 {
+          from { offset-distance: 20%; }
+          to   { offset-distance: 120%; }
+        }
+        @keyframes orbit-2 {
+          from { offset-distance: 40%; }
+          to   { offset-distance: 140%; }
+        }
+        @keyframes orbit-3 {
+          from { offset-distance: 60%; }
+          to   { offset-distance: 160%; }
+        }
+        @keyframes orbit-4 {
+          from { offset-distance: 80%; }
+          to   { offset-distance: 180%; }
         }
         .orbit-ring {
           position: absolute;
@@ -131,7 +163,9 @@ export default function OrbitSystem() {
           cursor: pointer;
           offset-path: ellipse(var(--rx) var(--ry) at 50% 50%);
           offset-rotate: 0deg;
-          animation: orbit var(--duration) linear infinite;
+          animation-duration: var(--duration);
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
         .orbit-avatar {
           width: 100%;
@@ -173,26 +207,27 @@ export default function OrbitSystem() {
       <div style={{ position: 'relative', width: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
 
         {/* User Center */}
-        {!activeIds.every(id => id === null) && (
-          <div style={{
-            width: '12vmin',
-            height: '12vmin',
-            minWidth: '60px',
-            minHeight: '60px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
-            boxShadow: '0 0 30px var(--color-secondary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bold',
-            zIndex: 10,
-            fontSize: 'clamp(1rem, 2.5vmin, 1.5rem)',
-            color: 'white'
-          }}>
-            {preferences.name.substring(0, 2).toUpperCase() || 'YOU'}
-          </div>
-        )}
+        <div style={{
+          width: '12vmin',
+          height: '12vmin',
+          minWidth: '60px',
+          minHeight: '60px',
+          borderRadius: '50%',
+          background: preferences.profilePic
+            ? `url(${preferences.profilePic}) center/cover`
+            : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+          boxShadow: '0 0 30px var(--color-secondary)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontWeight: 'bold',
+          zIndex: 10,
+          fontSize: 'clamp(1rem, 2.5vmin, 1.5rem)',
+          color: 'white',
+          border: '2px solid var(--color-secondary)',
+        }}>
+          {!preferences.profilePic && (preferences.name.substring(0, 2).toUpperCase() || 'YOU')}
+        </div>
 
         {/* Orbit Rings and Aliens */}
         {activeIds
@@ -224,7 +259,7 @@ export default function OrbitSystem() {
                   '--rx': `${rx}px`,
                   '--ry': `${ry}px`,
                   '--duration': `${duration}s`,
-                  animationDelay: `${delay}s`
+                  animationName: `orbit-${i}`
                 }}
                 title={`${alien.name} (${alien.distanceLY} Light years)`}
               >
@@ -311,6 +346,14 @@ export default function OrbitSystem() {
           onClose={() => setSelectedAlien(null)}
           onMatch={handleMatch}
           onDismiss={handleDismiss}
+        />
+      )}
+
+      {pendingMatchAlien && (
+        <ScientificWarningModal
+          alien={pendingMatchAlien}
+          onProceed={() => confirmMatch(pendingMatchAlien)}
+          onCancel={() => setPendingMatchAlien(null)}
         />
       )}
 
