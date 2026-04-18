@@ -203,17 +203,17 @@ export default function Signup() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Age (Earth Years):</label>
-                <input type="number" min="0" name="age" value={formData.age} onChange={handleChange} placeholder="e.g. 24" />
+                <input required type="number" min="0" name="age" value={formData.age} onChange={handleChange} placeholder="e.g. 24" />
               </div>
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Species:</label>
-                <input type="text" name="species" value={formData.species} onChange={handleChange} placeholder="Type your species" />
+                <input required type="text" name="species" value={formData.species} onChange={handleChange} placeholder="Type your species" />
               </div>
             </div>
 
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Planet:</label>
-              <input type="text" name="planet" value={formData.planet} onChange={handleChange} placeholder="e.g. Earth" />
+              <input required type="text" name="planet" value={formData.planet} onChange={handleChange} placeholder="e.g. Earth" />
             </div>
             
             <div>
