@@ -69,12 +69,14 @@ export default function OrbitSystem() {
         }
       `}</style>
 
-      <div style={{ position: 'relative', width: '100%', maxWidth: '800px', height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', width: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         
         {/* User Center */}
         <div style={{
-          width: '80px',
-          height: '80px',
+          width: '12vmin',
+          height: '12vmin',
+          minWidth: '60px',
+          minHeight: '60px',
           borderRadius: '50%',
           background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
           boxShadow: '0 0 30px var(--color-secondary)',
@@ -83,7 +85,7 @@ export default function OrbitSystem() {
           justifyContent: 'center',
           fontWeight: 'bold',
           zIndex: 10,
-          fontSize: '1.2rem',
+          fontSize: 'clamp(1rem, 2.5vmin, 1.5rem)',
           color: 'white'
         }}>
           {preferences.name.substring(0, 2).toUpperCase() || 'YOU'}
@@ -91,16 +93,16 @@ export default function OrbitSystem() {
 
         {/* Orbit Rings and Aliens */}
         {visibleAliens.map((alien, i) => {
-          // Calculate radius based on distance (min 80px, max 280px)
+          // Calculate radius based on distance
           const radiusRatio = preferences.maxDistanceAU > 0 ? alien.distanceAU / preferences.maxDistanceAU : 1;
-          const radius = 80 + (radiusRatio * 200);
-          const duration = 15 + (radius / 10); // Slower orbit for further objects
+          const radius = 12 + (radiusRatio * 25); // Responsive radius using vmin
+          const duration = 15 + radius / 2; // Slower orbit for further objects
           const startAngle = (i * (360 / visibleAliens.length));
 
           return (
             <div key={alien.id}>
               {/* Ring */}
-              <div className="orbit-ring" style={{ width: `${radius * 2}px`, height: `${radius * 2}px` }} />
+              <div className="orbit-ring" style={{ width: `${radius * 2}vmin`, height: `${radius * 2}vmin` }} />
               
               {/* Profile */}
               <div 
@@ -109,9 +111,9 @@ export default function OrbitSystem() {
                 style={{
                   backgroundImage: `url(${alien.profilePic})`,
                   // @ts-ignore
-                  '--radius': `${radius}px`,
+                  '--radius': `${radius}vmin`,
                   '--duration': `${duration}s`,
-                  animationDelay: `-${startAngle}s` // Stagger start positions
+                  animationDelay: `-${startAngle}s`
                 }}
                 title={`${alien.name} (${alien.distanceAU} AU)`}
               >

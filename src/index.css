@@ -21,8 +21,8 @@ body {
     radial-gradient(circle at 85% 30%, rgba(217, 3, 104, 0.25), transparent 25%);
   background-attachment: fixed;
   color: var(--color-white);
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -160,6 +160,9 @@ select option {
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 @keyframes spin {

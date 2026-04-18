@@ -4,7 +4,6 @@ import Preferences from './pages/Preferences';
 import Home from './pages/home/Home';
 import Explore from './pages/Explore';
 import Chat from './pages/Chat';
-import { Rocket } from 'lucide-react';
 
 function App() {
   const location = useLocation();
@@ -13,18 +12,14 @@ function App() {
 
   return (
     <div className="app-container">
-      <nav className="navbar">
-        <Link to="/" className="navbar-brand">
-          <Rocket className="inline-block mr-2" size={24} style={{ verticalAlign: 'text-bottom', color: 'var(--color-secondary)' }} />
-          SSTRUK
-        </Link>
-        {!hideExploreLink && (
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <Link to="/explore" className="btn-outline" style={{ padding: '6px 16px', fontSize: '0.9rem' }}>Explore</Link>
-          </div>
-        )}
-      </nav>
-      
+      {!isHomePage && (
+        <div style={{ position: 'absolute', top: '24px', left: '32px', zIndex: 100 }}>
+          <Link to="/" style={{ display: 'inline-block' }}>
+            <img src={`${import.meta.env.BASE_URL}SSTRUK-logo.png?v=5`} alt="SSTRUK Logo" style={{ height: '80px', objectFit: 'contain' }} />
+          </Link>
+        </div>
+      )}
+
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
