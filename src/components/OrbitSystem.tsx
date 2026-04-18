@@ -64,7 +64,26 @@ export default function OrbitSystem() {
       newSet.add(alien.id);
       return newSet;
     });
-    setSelectedAlien(null);
+
+    // Find the next available alien in activeIds
+    const currentIndex = activeIds.indexOf(alien.id);
+    let nextId = null;
+    if (currentIndex >= 0) {
+      for(let i=1; i<5; i++) {
+        const candidate = activeIds[(currentIndex + i) % 5];
+        if (candidate && candidate !== alien.id) {
+          nextId = candidate;
+          break;
+        }
+      }
+    }
+
+    if (nextId) {
+      const nextAlien = mockAliens.find(a => a.id === nextId);
+      setSelectedAlien(nextAlien || null);
+    } else {
+      setSelectedAlien(null);
+    }
   };
 
   const visibleAliens = mockAliens.filter(a => activeIds.includes(a.id));
