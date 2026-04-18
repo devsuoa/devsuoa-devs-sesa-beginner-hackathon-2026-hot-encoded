@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import type { AlienProfile } from '../data/mockAliens';
-import { X, Heart, Info, Globe, Wind } from 'lucide-react';
+import { X, Heart, Info, Globe, Wind, Thermometer } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { getCompatibility } from '../utils/compatibility';
+import { getScientificWarnings } from '../utils/scienceWarnings';
 
 interface ProfileModalProps {
   alien: AlienProfile;
@@ -15,6 +16,16 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const { preferences } = useAppContext();
   const compatibility = getCompatibility(alien, preferences);
+  const warnings = getScientificWarnings(alien);
+  const warnedLabels = new Set(warnings.map(w => w.label.toLowerCase()));
+
+  // Helper: return red/orange border colour if a stat is flagged
+  const dangerFor = (key: string) => {
+    const w = warnings.find(w => w.label.toLowerCase().includes(key.toLowerCase()));
+    if (!w) return 'rgba(234, 222, 218, 0.1)';
+    return w.severity === 'danger' ? 'rgba(220, 38, 38, 0.6)' : 'rgba(245, 158, 11, 0.6)';
+  };
+  void warnedLabels;
 
   useEffect(() => {
     setSwipeDirection(null);
@@ -156,17 +167,23 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
           </h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px', marginBottom: '32px' }}>
-            <div className="glass-panel" style={{ padding: '16px', textAlign: 'center', border: '1px solid rgba(234, 222, 218, 0.1)' }}>
+            <div className="glass-panel" style={{ padding: '16px', textAlign: 'center', border: `1px solid ${dangerFor('gravity')}` }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-primary)' }}>{alien.gravityGs}G</div>
               <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>Gravity</div>
             </div>
-            <div className="glass-panel" style={{ padding: '16px', textAlign: 'center', border: '1px solid rgba(234, 222, 218, 0.1)' }}>
+            <div className="glass-panel" style={{ padding: '16px', textAlign: 'center', border: `1px solid ${dangerFor('oxygen')}` }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-primary)' }}>{alien.oxygenPercent}%</div>
               <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>Atmospheric Oxygen</div>
             </div>
-            <div className="glass-panel" style={{ gridColumn: 'span 2', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: '1px solid rgba(234, 222, 218, 0.1)' }}>
+            <div className="glass-panel" style={{ padding: '16px', textAlign: 'center', border: `1px solid ${dangerFor('temperature') || dangerFor('heat') || dangerFor('cold')}` }}>
+              <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <Thermometer size={20} />{alien.homeTemperatureC.toLocaleString()}°C
+              </div>
+              <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>Surface Temperature</div>
+            </div>
+            <div className="glass-panel" style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: `1px solid ${dangerFor('surface') || dangerFor('ocean')}` }}>
               {alien.planetType === 'Gas Giant' ? <Wind size={20} /> : <Globe size={20} />}
-              <span style={{ fontWeight: 'bold' }}>{alien.planetType}</span>
+              <span style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{alien.planetType}</span>
             </div>
           </div>
 

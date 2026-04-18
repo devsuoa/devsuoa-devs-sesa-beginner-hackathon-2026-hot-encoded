@@ -5,12 +5,15 @@ import { useAppContext } from '../context/AppContext';
 import ProfileModal from './ProfileModal';
 import { getCompatibility } from '../utils/compatibility';
 import { useRocketNav } from '../context/TransitionContext';
+import ScientificWarningModal from './ScientificWarningModal';
+import { getScientificWarnings } from '../utils/scienceWarnings';
 
 export default function OrbitSystem() {
   const { preferences, addMatch, matches } = useAppContext();
   const triggerRocketNav = useRocketNav();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
+  const [pendingMatchAlien, setPendingMatchAlien] = useState<AlienProfile | null>(null);
   
   // Keep exactly 5 slots for the 5 orbit tracks
   const [activeIds, setActiveIds] = useState<(string | null)[]>([null, null, null, null, null]);
@@ -58,8 +61,22 @@ export default function OrbitSystem() {
   if (!preferences) return null;
 
   const handleMatch = (alien: AlienProfile) => {
+    const warnings = getScientificWarnings(alien);
+    if (warnings.length > 0) {
+      // Hazards detected — close modal and show warning first
+      setSelectedAlien(null);
+      setPendingMatchAlien(alien);
+    } else {
+      // No hazards — proceed directly
+      addMatch(alien);
+      setSelectedAlien(null);
+      triggerRocketNav(`/chat/${alien.id}`, { alienImg: alien.profilePic });
+    }
+  };
+
+  const confirmMatch = (alien: AlienProfile) => {
     addMatch(alien);
-    setSelectedAlien(null);
+    setPendingMatchAlien(null);
     triggerRocketNav(`/chat/${alien.id}`, { alienImg: alien.profilePic });
   };
 
@@ -230,6 +247,14 @@ export default function OrbitSystem() {
           onClose={() => setSelectedAlien(null)} 
           onMatch={handleMatch} 
           onDismiss={handleDismiss}
+        />
+      )}
+
+      {pendingMatchAlien && (
+        <ScientificWarningModal
+          alien={pendingMatchAlien}
+          onProceed={() => confirmMatch(pendingMatchAlien)}
+          onCancel={() => setPendingMatchAlien(null)}
         />
       )}
 

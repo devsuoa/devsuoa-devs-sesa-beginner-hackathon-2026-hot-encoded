@@ -16,6 +16,7 @@ export interface AlienProfile {
   // Scientific Measures
   gravityGs: number;
   oxygenPercent: number;
+  homeTemperatureC: number; // Average surface temperature in Celsius
   planetType: 'Gas Giant' | 'Solid Ground' | 'All Water';
 }
 
@@ -34,6 +35,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Stargazing", "Quantum Chess", "Nebula Surfing"],
     gravityGs: 2.5,
     oxygenPercent: 5,
+    homeTemperatureC: 450,
     planetType: "Gas Giant"
   },
   {
@@ -50,6 +52,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Deep Sea Weaving", "Coral Sculpting", "Hydro-acoustics"],
     gravityGs: 0.8,
     oxygenPercent: 12,
+    homeTemperatureC: 4,
     planetType: "All Water"
   },
   {
@@ -66,6 +69,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Volcano Diving", "Asteroid Mining", "Heavy Metal (Literally)"],
     gravityGs: 1.5,
     oxygenPercent: 18,
+    homeTemperatureC: 280,
     planetType: "Solid Ground"
   },
   {
@@ -82,6 +86,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Prism Alignment", "Sonic Resonance Meditation", "Jewelry Making"],
     gravityGs: 1.2,
     oxygenPercent: 21,
+    homeTemperatureC: 18,
     planetType: "Solid Ground"
   },
   {
@@ -98,6 +103,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Decomposition", "Bioluminescent Dancing", "Networking (Mycelial)"],
     gravityGs: 0.5,
     oxygenPercent: 8,
+    homeTemperatureC: 10,
     planetType: "Solid Ground"
   },
   {
@@ -114,6 +120,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Solar Surfing", "Fusion Cooking", "Philosophy"],
     gravityGs: 10.0,
     oxygenPercent: 0,
+    homeTemperatureC: 6000,
     planetType: "Gas Giant"
   },
   {
@@ -130,6 +137,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Energy Channeling", "Forest Walks", "Astral Projection"],
     gravityGs: 1.0,
     oxygenPercent: 21,
+    homeTemperatureC: 20,
     planetType: "Solid Ground"
   },
   {
@@ -146,6 +154,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Galactic Politics", "Telepathy", "Strategic Board Games"],
     gravityGs: 1.5,
     oxygenPercent: 16,
+    homeTemperatureC: 8,
     planetType: "Solid Ground"
   },
   {
@@ -162,6 +171,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Absorbing Nutrients", "Bouncing", "Looking Cute"],
     gravityGs: 0.8,
     oxygenPercent: 25,
+    homeTemperatureC: 26,
     planetType: "Solid Ground"
   },
   {
@@ -178,6 +188,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Hunting", "Acid Spitting", "Hiding in Vents"],
     gravityGs: 2.0,
     oxygenPercent: 5,
+    homeTemperatureC: -90,
     planetType: "Gas Giant"
   },
   {
@@ -194,6 +205,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Nebula Drifting", "Silent Meditation", "Cloak Making"],
     gravityGs: 0.5,
     oxygenPercent: 2,
+    homeTemperatureC: -210,
     planetType: "Gas Giant"
   },
   {
@@ -210,6 +222,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Diplomacy", "Fashion", "Sipping Plasma Wine"],
     gravityGs: 1.2,
     oxygenPercent: 18,
+    homeTemperatureC: 38,
     planetType: "Solid Ground"
   },
   {
@@ -226,6 +239,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Creating Light Shows", "Exploring Dark Caves", "Eating Batteries"],
     gravityGs: 0.7,
     oxygenPercent: 15,
+    homeTemperatureC: 22,
     planetType: "Solid Ground"
   },
   {
@@ -242,6 +256,7 @@ export const mockAliens: AlienProfile[] = [
     hobbies: ["Vine Swinging", "Amulet Crafting", "Botany"],
     gravityGs: 1.0,
     oxygenPercent: 25,
+    homeTemperatureC: 34,
     planetType: "Solid Ground"
   }
 ];
