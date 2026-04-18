@@ -11,7 +11,7 @@ export default function Signup() {
     limbs: 4,
     alienType: 'Humanoid',
     size: 'Medium',
-    maxDistanceAU: 10,
+    maxDistanceAU: 100,
     profilePic: ''
   });
 

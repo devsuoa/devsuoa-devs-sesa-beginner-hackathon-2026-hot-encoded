@@ -5,9 +5,10 @@ interface ProfileModalProps {
   alien: AlienProfile;
   onClose: () => void;
   onMatch: (alien: AlienProfile) => void;
+  onDismiss: (alien: AlienProfile) => void;
 }
 
-export default function ProfileModal({ alien, onClose, onMatch }: ProfileModalProps) {
+export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: ProfileModalProps) {
   return (
     <div style={{
       position: 'fixed',
@@ -119,7 +120,7 @@ export default function ProfileModal({ alien, onClose, onMatch }: ProfileModalPr
 
           <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '24px' }}>
             <button 
-              onClick={onClose}
+              onClick={() => onDismiss(alien)}
               style={{
                 width: '60px', height: '60px', borderRadius: '50%',
                 background: 'rgba(46, 41, 78, 0.8)', border: '2px solid var(--color-white)',
