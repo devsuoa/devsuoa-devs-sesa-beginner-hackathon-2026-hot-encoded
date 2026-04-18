@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { HeartCrack, Heart } from 'lucide-react';
 import { mockAliens } from '../data/mockAliens';
 import type { AlienProfile } from '../data/mockAliens';
 import { useAppContext } from '../context/AppContext';
@@ -7,20 +9,23 @@ import { getCompatibility } from '../utils/compatibility';
 import { useRocketNav } from '../context/TransitionContext';
 
 export default function OrbitSystem() {
+  const navigate = useNavigate();
   const { preferences, addMatch, matches } = useAppContext();
   const triggerRocketNav = useRocketNav();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
-  
+  const [showBreakingAnim, setShowBreakingAnim] = useState(false);
+  const [animStage, setAnimStage] = useState<'none' | 'heart' | 'break' | 'final'>('none');
+
   // Keep exactly 5 slots for the 5 orbit tracks
   const [activeIds, setActiveIds] = useState<(string | null)[]>([null, null, null, null, null]);
 
   useEffect(() => {
     if (!preferences) return;
-    
+
     // Available aliens are those within distance, not matched, not dismissed, and not currently active
-    const available = mockAliens.filter(a => 
-      a.distanceAU <= preferences.maxDistanceAU &&
+    const available = mockAliens.filter(a =>
+      a.distanceLY <= preferences.maxDistanceLY &&
       !matches.find(m => m.id === a.id) &&
       !dismissedIds.has(a.id) &&
       !activeIds.includes(a.id)
@@ -32,13 +37,13 @@ export default function OrbitSystem() {
 
     let changed = false;
     const newActiveIds = [...activeIds];
-    
+
     // Check each of the 5 tracks
     for (let i = 0; i < 5; i++) {
       const currentId = newActiveIds[i];
       // Check if the current alien in this track is still valid
-      const isStillValid = currentId && 
-        mockAliens.find(a => a.id === currentId && a.distanceAU <= preferences.maxDistanceAU) &&
+      const isStillValid = currentId &&
+        mockAliens.find(a => a.id === currentId && a.distanceLY <= preferences.maxDistanceLY) &&
         !matches.find(m => m.id === currentId) &&
         !dismissedIds.has(currentId);
 
@@ -53,7 +58,16 @@ export default function OrbitSystem() {
     if (changed) {
       setActiveIds(newActiveIds);
     }
-  }, [preferences, matches, dismissedIds, activeIds]);
+
+    // Trigger breaking animation if empty and not already shown
+    if (newActiveIds.every(id => id === null) && animStage === 'none') {
+      setAnimStage('heart');
+      setTimeout(() => setAnimStage('break'), 1500);
+      setTimeout(() => setAnimStage('final'), 2500);
+    } else if (newActiveIds.some(id => id !== null)) {
+      setAnimStage('none');
+    }
+  }, [preferences, matches, dismissedIds, activeIds, animStage]);
 
   if (!preferences) return null;
 
@@ -138,29 +152,48 @@ export default function OrbitSystem() {
           transform: scale(1.2);
           box-shadow: 0 0 25px var(--color-secondary);
         }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes heartPulse {
+          0% { transform: scale(1); opacity: 0; }
+          50% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes heartBreakLeft {
+          0% { transform: translateX(0) rotate(0); }
+          100% { transform: translateX(-50px) translateY(20px) rotate(-20deg); opacity: 0; }
+        }
+        @keyframes heartBreakRight {
+          0% { transform: translateX(0) rotate(0); }
+          100% { transform: translateX(50px) translateY(20px) rotate(20deg); opacity: 0; }
+        }
       `}</style>
 
       <div style={{ position: 'relative', width: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-        
+
         {/* User Center */}
-        <div style={{
-          width: '12vmin',
-          height: '12vmin',
-          minWidth: '60px',
-          minHeight: '60px',
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
-          boxShadow: '0 0 30px var(--color-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontWeight: 'bold',
-          zIndex: 10,
-          fontSize: 'clamp(1rem, 2.5vmin, 1.5rem)',
-          color: 'white'
-        }}>
-          {preferences.name.substring(0, 2).toUpperCase() || 'YOU'}
-        </div>
+        {!activeIds.every(id => id === null) && (
+          <div style={{
+            width: '12vmin',
+            height: '12vmin',
+            minWidth: '60px',
+            minHeight: '60px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+            boxShadow: '0 0 30px var(--color-secondary)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 'bold',
+            zIndex: 10,
+            fontSize: 'clamp(1rem, 2.5vmin, 1.5rem)',
+            color: 'white'
+          }}>
+            {preferences.name.substring(0, 2).toUpperCase() || 'YOU'}
+          </div>
+        )}
 
         {/* Orbit Rings and Aliens */}
         {activeIds
@@ -171,19 +204,19 @@ export default function OrbitSystem() {
           .map((alien, i) => {
 
           // Assign each slot to a distinct track (0 to 4)
-          const rx = 120 + (i * 65); 
-          const ry = 80 + (i * 40);  
-          const duration = 15 + (i * 8); 
-          
+          const rx = 120 + (i * 65);
+          const ry = 80 + (i * 40);
+          const duration = 15 + (i * 8);
+
           const delay = -1 * (i * (duration / 5));
 
           return (
             <div key={`track-${i}-${alien.id}`}>
               {/* Ring */}
               <div className="orbit-ring" style={{ width: `${rx * 2}px`, height: `${ry * 2}px` }} />
-              
+
               {/* Profile */}
-              <div 
+              <div
                 className="orbit-item"
                 onClick={() => setSelectedAlien(alien)}
                 style={{
@@ -194,20 +227,90 @@ export default function OrbitSystem() {
                   '--duration': `${duration}s`,
                   animationDelay: `${delay}s`
                 }}
-                title={`${alien.name} (${alien.distanceAU} AU)`}
+                title={`${alien.name} (${alien.distanceLY} Light years)`}
               >
                 <div className="orbit-avatar" style={{ backgroundImage: `url(${alien.profilePic})` }} />
               </div>
             </div>
           );
         })}
+
+        {/* Empty state message / Breaking Animation */}
+        {animStage !== 'none' && (
+          <div style={{
+            position: 'absolute',
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            width: '100%',
+            height: '100%',
+            pointerEvents: animStage === 'final' ? 'auto' : 'none'
+          }}>
+            {(animStage === 'heart' || animStage === 'break') && (
+              <div style={{ position: 'relative', width: '300px', height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{
+                  position: 'absolute',
+                  animation: animStage === 'break' ? 'heartBreakLeft 1.2s ease-in forwards' : 'heartPulse 1.5s ease-out infinite',
+                }}>
+                  <Heart
+                    size={250}
+                    fill="var(--color-secondary)"
+                    color="var(--color-secondary)"
+                    style={{ clipPath: 'inset(0 50% 0 0)' }}
+                  />
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  animation: animStage === 'break' ? 'heartBreakRight 1.2s ease-in forwards' : 'heartPulse 1.5s ease-out infinite',
+                }}>
+                  <Heart
+                    size={250}
+                    fill="var(--color-secondary)"
+                    color="var(--color-secondary)"
+                    style={{ clipPath: 'inset(0 0 0 50%)' }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {animStage === 'final' && (
+              <div className="glass-panel" style={{
+                padding: '40px',
+                maxWidth: '450px',
+                animation: 'fadeIn 0.8s ease-out forwards',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '24px',
+                pointerEvents: 'auto'
+              }}>
+                <p style={{ margin: 0, fontSize: '2.8rem', lineHeight: 1.1, color: 'var(--color-secondary)', fontWeight: 'bold' }}>
+                  The stars are not aligned
+                </p>
+                <p style={{ margin: 0, fontSize: '1.2rem', color: 'rgba(234, 222, 218, 0.8)', lineHeight: 1.4, marginTop: '8px' }}>
+                  Looks like you've run out of potential matches, check back later
+                </p>
+                <button
+                  onClick={() => { window.location.href = '/preferences'; }}
+                  className="btn-outline"
+                  style={{ marginTop: '8px', padding: '12px 40px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer' }}
+                >
+                  Back
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {selectedAlien && (
-        <ProfileModal 
-          alien={selectedAlien} 
-          onClose={() => setSelectedAlien(null)} 
-          onMatch={handleMatch} 
+        <ProfileModal
+          alien={selectedAlien}
+          onClose={() => setSelectedAlien(null)}
+          onMatch={handleMatch}
           onDismiss={handleDismiss}
         />
       )}

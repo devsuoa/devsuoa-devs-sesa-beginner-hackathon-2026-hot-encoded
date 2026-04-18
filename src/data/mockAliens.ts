@@ -4,10 +4,10 @@ export interface AlienProfile {
   alienType: string;
   limbs: number;
   size: string; // e.g. "Small", "Medium", "Large", "Colossal"
-  distanceAU: number;
+  distanceLY: number;
   profilePic: string;
   compatibilityPercent: number; // Randomly generated between 50 and 99.5
-  
+
   // Dating Info
   bio: string;
   age: number;
@@ -26,7 +26,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 4,
     size: "Medium",
-    distanceAU: 4.2,
+    distanceLY: 4.2,
     profilePic: "/alien_glax.png",
     compatibilityPercent: 87.4,
     bio: "Just a glowing being looking for someone to share binary sunsets with. I love long flights through nebula clouds.",
@@ -42,7 +42,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 8,
     size: "Small",
-    distanceAU: 12.8,
+    distanceLY: 12.8,
     profilePic: "/alien_zorblax.png",
     compatibilityPercent: 92.1,
     bio: "Water you up to? I'm quite the catch! Looking for a land-dweller to show me around the solid ground.",
@@ -58,7 +58,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 4,
     size: "Large",
-    distanceAU: 1.5,
+    distanceLY: 1.5,
     profilePic: "/alien_vex.png",
     compatibilityPercent: 76.8,
     bio: "Tough scales, soft heart. Need someone who can handle the heat. Let's make some craters together.",
@@ -74,7 +74,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 4,
     size: "Medium",
-    distanceAU: 25.4,
+    distanceLY: 25.4,
     profilePic: "/alien_crystal.png",
     compatibilityPercent: 98.2,
     bio: "I may look fragile, but my heart is a diamond. Looking for someone to refract the light of the cosmos with.",
@@ -90,7 +90,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 6,
     size: "Small",
-    distanceAU: 8.9,
+    distanceLY: 8.9,
     profilePic: "/alien_fungal.png",
     compatibilityPercent: 88.5,
     bio: "I'm a fun guy! (Get it?) Looking for a fertile mind to grow old together.",
@@ -106,7 +106,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 0,
     size: "Medium",
-    distanceAU: 55.0,
+    distanceLY: 55.0,
     profilePic: "/alien_plasma.png",
     compatibilityPercent: 61.3,
     bio: "Pure energy trapped in a containment suit. Hoping to find a spark. Warning: Handle with insulated gloves.",
@@ -122,7 +122,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Hybrid",
     limbs: 4,
     size: "Large",
-    distanceAU: 12.4,
+    distanceLY: 12.4,
     profilePic: "/alien_lumina.webp",
     compatibilityPercent: 94.2,
     bio: "I can show you the stars, literally. Looking for an Earthling to share my cosmic wisdom and glowing energy with.",
@@ -138,7 +138,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Hybrid",
     limbs: 4,
     size: "Medium",
-    distanceAU: 8.1,
+    distanceLY: 8.1,
     profilePic: "/alien_zarok.webp",
     compatibilityPercent: 65.8,
     bio: "Serious, dedicated, and very logical. My third eye sees all possibilities. Seeking a companion who appreciates order.",
@@ -154,7 +154,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 0,
     size: "Small",
-    distanceAU: 3.3,
+    distanceLY: 3.3,
     profilePic: "/alien_squish.webp",
     compatibilityPercent: 89.9,
     bio: "I'm just a little guy! Extremely squishy and very affectionate. I will stick to you.",
@@ -170,7 +170,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 4,
     size: "Colossal",
-    distanceAU: 35.0,
+    distanceLY: 35.0,
     profilePic: "/alien_xeno.webp",
     compatibilityPercent: 52.1,
     bio: "Hiss... I mean, hello. Might look intimidating, but I'm really just a misunderstood collector of genetic material.",
@@ -186,7 +186,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Hybrid",
     limbs: 4,
     size: "Medium",
-    distanceAU: 66.6,
+    distanceLY: 66.6,
     profilePic: "/alien_cyra.jpeg",
     compatibilityPercent: 78.4,
     bio: "Drifting through the nebulas has made me quiet, but my bioluminescence speaks volumes.",
@@ -202,7 +202,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Human",
     limbs: 4,
     size: "Medium",
-    distanceAU: 2.1,
+    distanceLY: 2.1,
     profilePic: "/alien_ignis.jpeg",
     compatibilityPercent: 81.5,
     bio: "I bring greetings from the Scarlet Court. If you can handle high society and fiery personalities, we'll get along famously.",
@@ -218,7 +218,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Alien",
     limbs: 4,
     size: "Small",
-    distanceAU: 18.9,
+    distanceLY: 18.9,
     profilePic: "/alien_sparky.jpeg",
     compatibilityPercent: 91.2,
     bio: "I'm literally the light of the party! My head-stalks glow when I'm happy.",
@@ -234,7 +234,7 @@ export const mockAliens: AlienProfile[] = [
     alienType: "Human",
     limbs: 4,
     size: "Medium",
-    distanceAU: 9.5,
+    distanceLY: 9.5,
     profilePic: "/alien_kaelen.jpeg",
     compatibilityPercent: 96.7,
     bio: "Protector of the azure waterfalls. I'm looking for a partner to explore the wild flora and fauna of my home planet.",

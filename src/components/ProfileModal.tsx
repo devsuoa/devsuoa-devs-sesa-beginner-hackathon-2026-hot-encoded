@@ -117,7 +117,7 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
             <div>
               <h2 style={{ margin: 0, fontSize: '2rem', color: 'var(--color-secondary)' }}>{alien.name}, {alien.age}</h2>
               <p style={{ margin: '4px 0 0', color: 'rgba(234, 222, 218, 0.8)' }}>
-                {alien.alienType} • {alien.distanceAU} AU Away
+                {alien.alienType} • {alien.distanceLY} Light years Away
               </p>
             </div>
             
