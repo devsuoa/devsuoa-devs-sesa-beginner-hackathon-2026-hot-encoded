@@ -105,6 +105,12 @@ input, select, textarea {
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
+input[type="range"] {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--color-secondary);

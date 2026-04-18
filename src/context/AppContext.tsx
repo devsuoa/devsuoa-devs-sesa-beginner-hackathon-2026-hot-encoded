@@ -3,10 +3,16 @@ import type { AlienProfile } from '../data/mockAliens';
 
 export interface UserPreferences {
   name: string;
+  age: string;
+  species: string;
+  planet: string;
+  bio: string;
+  interests: string[];
   limbs: number;
   alienType: string;
   size: string;
   maxDistanceAU: number;
+  goals: string;
   profilePic: string; // URL or base64
 }
 

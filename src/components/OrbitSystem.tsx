@@ -107,6 +107,7 @@ export default function OrbitSystem() {
                 className="orbit-item"
                 onClick={() => setSelectedAlien(alien)}
                 style={{
+                  backgroundImage: `url(${alien.profilePic})`,
                   // @ts-ignore
                   '--radius': `${radius}px`,
                   '--duration': `${duration}s`,
