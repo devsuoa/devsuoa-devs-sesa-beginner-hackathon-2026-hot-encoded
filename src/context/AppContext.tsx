@@ -7,6 +7,7 @@ export interface UserPreferences {
   species: string;
   planet: string;
   bio: string;
+  interests: string[];
   limbs: number;
   alienType: string;
   size: string;

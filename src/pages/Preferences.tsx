@@ -46,7 +46,7 @@ export default function Preferences() {
             <h3 style={{ color: 'var(--color-secondary)', marginBottom: '16px', fontSize: '1.2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>Biological Preferences</h3>
             
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Preferred Species</label>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Preferred Biological Type</label>
               <select name="alienType" value={formData.alienType} onChange={handleChange}>
                 <option value="Human">Human</option>
                 <option value="Alien">Alien</option>

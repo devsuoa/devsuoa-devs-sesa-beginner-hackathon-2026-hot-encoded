@@ -17,6 +17,7 @@ export default function Signup() {
     species: preferences?.species || 'Human',
     planet: preferences?.planet || '',
     bio: preferences?.bio || '',
+    interests: preferences?.interests || [],
     profilePic: preferences?.profilePic || '',
     // Default preferences for now, will be updated on the next page
     limbs: preferences?.limbs || 4,
@@ -25,6 +26,8 @@ export default function Signup() {
     maxDistanceAU: preferences?.maxDistanceAU || 10,
     goals: preferences?.goals || 'Long term fusion',
   });
+  const [interestInput, setInterestInput] = useState('');
+  const interestSuggestions = ['Stargazing', 'Volcano Diving', 'Heavy Metal (Literally)', 'Asteroid Mining'];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +41,30 @@ export default function Signup() {
       ...prev,
       [name]: value
     }));
+  };
+
+  const addInterest = (value: string) => {
+    const trimmed = value.trim();
+    if (!trimmed || formData.interests.includes(trimmed) || formData.interests.length >= 3) return;
+    setFormData(prev => ({
+      ...prev,
+      interests: [...prev.interests, trimmed]
+    }));
+    setInterestInput('');
+  };
+
+  const removeInterest = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      interests: prev.interests.filter(item => item !== value)
+    }));
+  };
+
+  const handleInterestKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addInterest(interestInput);
+    }
   };
 
   const handlePhotoClick = () => {
@@ -170,12 +197,7 @@ export default function Signup() {
             </div>
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Species:</label>
-              <select name="species" value={formData.species} onChange={handleChange}>
-                <option value="Human">Human</option>
-                <option value="Alien">Alien</option>
-                <option value="Hybrid">Hybrid</option>
-                <option value="Open to all">Open to all</option>
-              </select>
+              <input type="text" name="species" value={formData.species} onChange={handleChange} placeholder="Type your species" />
             </div>
           </div>
 
@@ -202,6 +224,60 @@ export default function Signup() {
                 fontFamily: 'inherit'
               }} 
             />
+          </div>
+
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <label style={{ fontSize: '0.9rem' }}>Interests:</label>
+              <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.7)' }}>Up to 3</span>
+            </div>
+            <input
+              type="text"
+              value={interestInput}
+              onChange={e => setInterestInput(e.target.value)}
+              onKeyDown={handleInterestKeyDown}
+              placeholder="Type an interest and press Enter"
+            />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', margin: '12px 0' }}>
+              {formData.interests.map(interest => (
+                <button
+                  type="button"
+                  key={interest}
+                  onClick={() => removeInterest(interest)}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '999px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.08)',
+                    color: 'white',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {interest} ×
+                </button>
+              ))}
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {interestSuggestions
+                .filter(suggestion => !formData.interests.includes(suggestion))
+                .map(suggestion => (
+                  <button
+                    type="button"
+                    key={suggestion}
+                    onClick={() => addInterest(suggestion)}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '999px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'rgba(234, 222, 218, 0.9)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {suggestion}
+                  </button>
+              ))}
+            </div>
           </div>
           
           <div style={{ marginTop: '16px' }}>
