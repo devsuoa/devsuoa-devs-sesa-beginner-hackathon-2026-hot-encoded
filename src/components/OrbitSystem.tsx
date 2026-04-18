@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { mockAliens } from '../data/mockAliens';
 import type { AlienProfile } from '../data/mockAliens';
 import { useAppContext } from '../context/AppContext';
@@ -6,27 +6,75 @@ import ProfileModal from './ProfileModal';
 import MatchOverlay from './MatchOverlay';
 
 export default function OrbitSystem() {
-  const { preferences, addMatch } = useAppContext();
+  const { preferences, addMatch, matches } = useAppContext();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
   const [matchedAlien, setMatchedAlien] = useState<AlienProfile | null>(null);
+  const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
+  
+  // Keep exactly 5 slots for the 5 orbit tracks
+  const [activeIds, setActiveIds] = useState<(string | null)[]>([null, null, null, null, null]);
+
+  useEffect(() => {
+    if (!preferences) return;
+    
+    // Available aliens are those within distance, not matched, not dismissed, and not currently active
+    const available = mockAliens.filter(a => 
+      a.distanceAU <= preferences.maxDistanceAU &&
+      !matches.find(m => m.id === a.id) &&
+      !dismissedIds.has(a.id) &&
+      !activeIds.includes(a.id)
+    );
+
+    let changed = false;
+    const newActiveIds = [...activeIds];
+    
+    // Check each of the 5 tracks
+    for (let i = 0; i < 5; i++) {
+      const currentId = newActiveIds[i];
+      // Check if the current alien in this track is still valid
+      const isStillValid = currentId && 
+        mockAliens.find(a => a.id === currentId && a.distanceAU <= preferences.maxDistanceAU) &&
+        !matches.find(m => m.id === currentId) &&
+        !dismissedIds.has(currentId);
+
+      if (!isStillValid) {
+        // The slot is empty or invalid, pull a new alien from available pool
+        const nextAlien = available.shift();
+        newActiveIds[i] = nextAlien ? nextAlien.id : null;
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      setActiveIds(newActiveIds);
+    }
+  }, [preferences, matches, dismissedIds, activeIds]);
 
   if (!preferences) return null;
 
-  // Filter aliens based on max distance
-  const visibleAliens = mockAliens.filter(a => a.distanceAU <= preferences.maxDistanceAU);
-  
   const handleMatch = (alien: AlienProfile) => {
     addMatch(alien);
     setSelectedAlien(null);
     setMatchedAlien(alien);
   };
 
+  const handleDismiss = (alien: AlienProfile) => {
+    setDismissedIds(prev => {
+      const newSet = new Set(prev);
+      newSet.add(alien.id);
+      return newSet;
+    });
+    setSelectedAlien(null);
+  };
+
+  const visibleAliens = mockAliens.filter(a => activeIds.includes(a.id));
+
   return (
     <>
       <style>{`
         @keyframes orbit {
-          from { transform: rotate(0deg) translateX(var(--radius)) rotate(0deg); }
-          to   { transform: rotate(360deg) translateX(var(--radius)) rotate(-360deg); }
+          from { offset-distance: 0%; }
+          to   { offset-distance: 100%; }
         }
         .orbit-ring {
           position: absolute;
@@ -39,14 +87,14 @@ export default function OrbitSystem() {
         }
         .orbit-item {
           position: absolute;
-          top: 50%;
-          left: 50%;
-          margin-top: -30px;
-          margin-left: -30px;
           width: 60px;
           height: 60px;
+          margin-top: -30px; /* Center relative to offset path */
+          margin-left: -30px;
           border-radius: 50%;
           cursor: pointer;
+          offset-path: ellipse(var(--rx) var(--ry) at 50% 50%);
+          offset-rotate: 0deg;
           animation: orbit var(--duration) linear infinite;
         }
         .orbit-avatar {
@@ -69,7 +117,7 @@ export default function OrbitSystem() {
         }
       `}</style>
 
-      <div style={{ position: 'relative', width: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ position: 'relative', width: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
         
         {/* User Center */}
         <div style={{
@@ -92,17 +140,23 @@ export default function OrbitSystem() {
         </div>
 
         {/* Orbit Rings and Aliens */}
-        {visibleAliens.map((alien, i) => {
-          // Calculate radius based on distance
-          const radiusRatio = preferences.maxDistanceAU > 0 ? alien.distanceAU / preferences.maxDistanceAU : 1;
-          const radius = 12 + (radiusRatio * 25); // Responsive radius using vmin
-          const duration = 15 + radius / 2; // Slower orbit for further objects
-          const startAngle = (i * (360 / visibleAliens.length));
+        {activeIds.map((id, i) => {
+          if (!id) return null; // If no alien is available for this slot, don't render it
+          
+          const alien = mockAliens.find(a => a.id === id);
+          if (!alien) return null;
+
+          // Assign each slot to a distinct track (0 to 4)
+          const rx = 120 + (i * 65); 
+          const ry = 80 + (i * 40);  
+          const duration = 15 + (i * 8); 
+          
+          const delay = -1 * (i * (duration / 5));
 
           return (
-            <div key={alien.id}>
+            <div key={`track-${i}-${alien.id}`}>
               {/* Ring */}
-              <div className="orbit-ring" style={{ width: `${radius * 2}vmin`, height: `${radius * 2}vmin` }} />
+              <div className="orbit-ring" style={{ width: `${rx * 2}px`, height: `${ry * 2}px` }} />
               
               {/* Profile */}
               <div 
@@ -111,9 +165,10 @@ export default function OrbitSystem() {
                 style={{
                   backgroundImage: `url(${alien.profilePic})`,
                   // @ts-ignore
-                  '--radius': `${radius}vmin`,
+                  '--rx': `${rx}px`,
+                  '--ry': `${ry}px`,
                   '--duration': `${duration}s`,
-                  animationDelay: `-${startAngle}s`
+                  animationDelay: `${delay}s`
                 }}
                 title={`${alien.name} (${alien.distanceAU} AU)`}
               >
@@ -129,6 +184,7 @@ export default function OrbitSystem() {
           alien={selectedAlien} 
           onClose={() => setSelectedAlien(null)} 
           onMatch={handleMatch} 
+          onDismiss={handleDismiss}
         />
       )}
 

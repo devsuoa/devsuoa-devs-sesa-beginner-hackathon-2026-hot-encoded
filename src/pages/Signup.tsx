@@ -23,7 +23,7 @@ export default function Signup() {
     limbs: preferences?.limbs || 4,
     alienType: preferences?.alienType || 'Open to all',
     size: preferences?.size || 'No preference',
-    maxDistanceAU: preferences?.maxDistanceAU || 10,
+    maxDistanceAU: preferences?.maxDistanceAU || 100,
     goals: preferences?.goals || 'Long term fusion',
   });
   const [interestInput, setInterestInput] = useState('');
