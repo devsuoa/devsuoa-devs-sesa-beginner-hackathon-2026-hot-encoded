@@ -60,12 +60,23 @@ export default function ProfileModal({ alien, onClose, onMatch }: ProfileModalPr
         }} />
 
         <div style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
             <div>
               <h2 style={{ margin: 0, fontSize: '2rem', color: 'var(--color-secondary)' }}>{alien.name}, {alien.age}</h2>
               <p style={{ margin: '4px 0 0', color: 'rgba(234, 222, 218, 0.8)' }}>
                 {alien.alienType} • {alien.distanceAU} AU Away
               </p>
+            </div>
+            
+            {/* Compatibility Badge */}
+            <div style={{ 
+              background: `linear-gradient(135deg, ${alien.compatibilityPercent >= 80 ? 'var(--color-primary), var(--color-secondary)' : 'rgba(234, 222, 218, 0.2), rgba(234, 222, 218, 0.1)'})`,
+              padding: '8px 16px', 
+              borderRadius: '20px',
+              fontWeight: 'bold',
+              boxShadow: alien.compatibilityPercent >= 80 ? '0 4px 15px rgba(217, 3, 104, 0.4)' : 'none'
+            }}>
+              {alien.compatibilityPercent.toFixed(1)}% Match
             </div>
           </div>
 
