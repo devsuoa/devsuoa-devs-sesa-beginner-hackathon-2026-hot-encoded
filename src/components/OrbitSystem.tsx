@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { HeartCrack, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { mockAliens } from '../data/mockAliens';
 import type { AlienProfile } from '../data/mockAliens';
 import { useAppContext } from '../context/AppContext';
@@ -9,12 +8,12 @@ import { getCompatibility } from '../utils/compatibility';
 import { useRocketNav } from '../context/TransitionContext';
 
 export default function OrbitSystem() {
-  const navigate = useNavigate();
+
   const { preferences, addMatch, matches } = useAppContext();
   const triggerRocketNav = useRocketNav();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
-  const [showBreakingAnim, setShowBreakingAnim] = useState(false);
+
   const [animStage, setAnimStage] = useState<'none' | 'heart' | 'break' | 'final'>('none');
 
   // Keep exactly 5 slots for the 5 orbit tracks

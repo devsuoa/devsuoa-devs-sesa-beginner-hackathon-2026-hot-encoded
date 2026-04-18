@@ -43,8 +43,8 @@ export function getCompatibility(alien: AlienProfile, prefs: UserPreferences | n
   }
 
   // Distance Match (max 10)
-  if (prefs.maxDistanceAU > 0) {
-    const distanceScore = Math.max(0, 1 - (alien.distanceAU / prefs.maxDistanceAU));
+  if (prefs.maxDistanceLY > 0) {
+    const distanceScore = Math.max(0, 1 - (alien.distanceLY / prefs.maxDistanceLY));
     score += distanceScore * 10;
   } else {
     score += 5;

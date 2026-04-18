@@ -174,7 +174,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
           <img src={alien.profilePic} alt={alien.name} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} />
           <div>
             <h3 style={{ margin: 0, color: 'var(--color-primary)' }}>{alien.name}</h3>
-            <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.6)' }}>{alien.alienType} • {alien.distanceAU} AU away</span>
+            <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.6)' }}>{alien.alienType} • {alien.distanceLY} LY away</span>
           </div>
         </div>
 
@@ -182,7 +182,7 @@ Keep it friendly, slightly flirtatious, and warmly confusing. Keep the grammar s
         <div style={{ flex: 1, padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {messages.length === 0 && (
             <div style={{ textAlign: 'center', margin: '20px 0', color: 'rgba(234, 222, 218, 0.4)', fontSize: '0.9rem' }}>
-              Connection established across {alien.distanceAU} AU. Say hello!
+              Connection established across {alien.distanceLY} LY. Say hello!
             </div>
           )}
           
