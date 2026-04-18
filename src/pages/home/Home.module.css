@@ -1,54 +1,71 @@
-.banner {
+.homeContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  margin-bottom: 60px;
+  justify-content: center;
+  min-height: calc(100vh - 150px);
+  text-align: center;
+  padding: 2rem;
 }
 
-.bannerText h1 {
-  font-size: 48px;
-  line-height: 1.1;
-  margin: 0 0 16px;
+.logo {
+  max-width: 600px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.3));
 }
 
-.accent {
-  background: linear-gradient(90deg, #A855F7, #2DD4BF);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.slogan {
+  font-family: 'Cochocib Script Latin Pro', cursive;
+  font-size: 2.2rem;
+  color: var(--color-text, #f8fafc);
+  margin-bottom: 3.5rem;
+  font-weight: normal;
+  letter-spacing: normal;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.subtitle {
-  font-size: 18px;
-  color: #94A3B8;
-  margin: 0 0 24px;
+.enterOrbitBtn {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--color-primary, #a855f7), var(--color-secondary, #ec4899));
+  color: white;
+  padding: 1.2rem 3rem;
+  border-radius: 9999px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
-.bannerImage img {
-  width: 350px;
+.enterOrbitBtn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(236, 72, 153, 0.6), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  color: white;
 }
 
-.cards {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
+.enterOrbitBtn:active {
+  transform: translateY(1px);
 }
 
-.card {
-  background-color: #1E293B;
-  border-radius: 12px;
-  padding: 24px;
-  flex: 1;
-  min-width: 200px;
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
 }
 
-.card h3 {
-  margin: 0 0 8px;
-}
-
-.card p {
-  color: #94A3B8;
-  font-size: 14px;
-  margin: 0;
+@media (max-width: 768px) {
+  .logo {
+    max-width: 90%;
+  }
+  .slogan {
+    font-size: 1.3rem;
+  }
+  .enterOrbitBtn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
 }
