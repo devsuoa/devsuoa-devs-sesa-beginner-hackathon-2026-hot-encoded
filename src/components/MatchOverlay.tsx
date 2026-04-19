@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import type { AlienProfile } from '../data/mockAliens';
-import { useNavigate } from 'react-router';
 import { Heart } from 'lucide-react';
+import { useRocketNav } from '../context/TransitionContext';
 
 interface MatchOverlayProps {
   alien: AlienProfile;
@@ -9,15 +9,15 @@ interface MatchOverlayProps {
 }
 
 export default function MatchOverlay({ alien, userName }: MatchOverlayProps) {
-  const navigate = useNavigate();
+  const triggerRocketNav = useRocketNav();
 
   useEffect(() => {
-    // Automatically redirect to chat after 3 seconds
+    // Trigger rocket navigation after 2 seconds (giving time to see the match)
     const timer = setTimeout(() => {
-      navigate(`/chat/${alien.id}`);
-    }, 3000);
+      triggerRocketNav(`/chat/${alien.id}`);
+    }, 2000);
     return () => clearTimeout(timer);
-  }, [navigate, alien.id]);
+  }, [triggerRocketNav, alien.id]);
 
   return (
     <div style={{
@@ -45,8 +45,8 @@ export default function MatchOverlay({ alien, userName }: MatchOverlayProps) {
         }
       `}</style>
       
-      <h1 style={{ fontSize: '4rem', fontStyle: 'italic', marginBottom: '40px', textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
-        IT'S A MATCH!
+      <h1 style={{ fontSize: '3.5rem', fontStyle: 'italic', marginBottom: '40px', textShadow: '0 4px 20px rgba(0,0,0,0.5)', textAlign: 'center' }}>
+        YOU'VE BEEN STARSTRUCK!
       </h1>
       
       <div style={{ display: 'flex', alignItems: 'center', gap: '32px', marginBottom: '40px' }}>
