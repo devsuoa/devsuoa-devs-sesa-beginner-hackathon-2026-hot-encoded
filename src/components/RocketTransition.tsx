@@ -205,7 +205,7 @@ export const RocketTransition = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--color-primary)',
+                color: 'var(--color-secondary)',
                 fontSize: '3.5rem',
                 fontWeight: '900',
                 textShadow: '0 0 10px rgba(234, 222, 218, 0.5)',
@@ -213,8 +213,8 @@ export const RocketTransition = () => {
                 zIndex: 10
               }}
             >
-              <span>IT'S A</span>
-              <span>MATCH!</span>
+              <span>YOU'VE BEEN</span>
+              <span>STARSTRUCK!</span>
             </motion.div>
 
             {/* User and Match Avatars */}

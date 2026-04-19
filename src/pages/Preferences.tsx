@@ -43,20 +43,20 @@ export default function Preferences() {
       padding: '40px 20px',
       boxSizing: 'border-box'
     }}>
-      <div style={{ width: '100%', maxWidth: '500px', paddingTop: '40px' }}>
-        <div className="glass-panel" style={{ padding: '32px' }}>
+      <div style={{ width: '100%', maxWidth: '600px', paddingTop: '40px' }}>
+        <div className="glass-panel" style={{ padding: '40px' }}>
           <h1 style={{ textAlign: 'center', marginBottom: '24px', color: 'var(--color-secondary)' }}>Your Preferences</h1>
-          <p style={{ textAlign: 'center', marginBottom: '32px', color: 'rgba(234, 222, 218, 0.8)' }}>
+          <p style={{ textAlign: 'center', marginBottom: '32px', color: 'rgba(234, 222, 218, 0.8)', fontWeight: 'bold', fontSize: '1.1rem' }}>
             What kind of being are you looking for?
           </p>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-            <div>
-              <h3 style={{ color: 'var(--color-secondary)', marginBottom: '16px', fontSize: '1.2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>Biological Preferences</h3>
+            <div style={{ marginBottom: '24px' }}>
+              <h3 style={{ color: 'var(--color-secondary)', marginBottom: '16px', fontSize: '1.1rem', letterSpacing: '0.05em', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px', textTransform: 'uppercase' }}>Biological Preferences</h3>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Preferred Biological Type</label>
+              <div className="form-group">
+                <label>Preferred Biological Type</label>
                 <select name="alienType" value={formData.alienType} onChange={handleChange}>
                   <option value="Human">Human</option>
                   <option value="Alien">Alien</option>
@@ -65,8 +65,8 @@ export default function Preferences() {
                 </select>
               </div>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Preferred Size</label>
+              <div className="form-group">
+                <label>Preferred Size</label>
                 <select name="size" value={formData.size} onChange={handleChange}>
                   <option value="No preference">No preference</option>
                   <option value="Small">Small</option>
@@ -77,11 +77,11 @@ export default function Preferences() {
               </div>
             </div>
 
-            <div>
-              <h3 style={{ color: 'var(--color-secondary)', marginBottom: '16px', fontSize: '1.2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>Relationship Goals</h3>
+            <div style={{ marginBottom: '24px' }}>
+              <h3 style={{ color: 'var(--color-secondary)', marginBottom: '16px', fontSize: '1.1rem', letterSpacing: '0.05em', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px', textTransform: 'uppercase' }}>Relationship Goals</h3>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>What are you seeking?</label>
+              <div className="form-group">
+                <label>What are you seeking?</label>
                 <select name="goals" value={formData.goals} onChange={handleChange}>
                   <option value="Short term orbit">Short term orbit</option>
                   <option value="Long term fusion">Long term fusion</option>
@@ -90,11 +90,11 @@ export default function Preferences() {
                 </select>
               </div>
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Max Distance (light years)</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div className="form-group">
+                <label>Max Distance (light years)</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '10px 0' }}>
                   <input type="range" name="maxDistanceLY" min="0" max="100" value={formData.maxDistanceLY} onChange={handleChange} style={{ flex: 1 }} />
-                  <span style={{ width: '40px', textAlign: 'right' }}>{formData.maxDistanceLY}</span>
+                  <span style={{ minWidth: '45px', textAlign: 'right', fontWeight: 'bold', color: 'var(--color-secondary)', fontSize: '1.1rem' }}>{formData.maxDistanceLY}</span>
                 </div>
               </div>
             </div>

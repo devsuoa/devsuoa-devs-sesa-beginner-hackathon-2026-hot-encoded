@@ -172,7 +172,7 @@ export default function ProfileModal({ alien, onClose, onMatch, onDismiss }: Pro
             ))}
           </div>
 
-          <h3 style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ color: 'var(--color-secondary)', marginBottom: '16px', fontSize: '1.1rem', letterSpacing: '0.05em', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Info size={18} /> Scientific Measures
           </h3>
           

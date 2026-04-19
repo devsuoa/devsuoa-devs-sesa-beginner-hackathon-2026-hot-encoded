@@ -4,7 +4,9 @@ import Preferences from './pages/Preferences';
 import Home from './pages/home/Home';
 import Explore from './pages/Explore';
 import Chat from './pages/Chat';
+import { Starfield } from './components/Starfield';
 import { RocketTransition } from './components/RocketTransition';
+
 
 function App() {
   const location = useLocation();
@@ -12,6 +14,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <Starfield />
       {!isHomePage && (
         <div style={{ position: 'absolute', top: '24px', left: '32px', zIndex: 100 }}>
           <Link to="/" style={{ display: 'inline-block' }}>

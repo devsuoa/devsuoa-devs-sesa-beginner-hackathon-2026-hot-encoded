@@ -195,59 +195,52 @@ export default function Signup() {
               </div>
             </div>
 
-            <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Your Name:</label>
-              <input required type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
+            <div className="form-group">
+              <label>Your Name</label>
+              <input required type="text" name="name" value={formData.name} onChange={handleChange} placeholder="What should we call you?" />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Age (Earth Years):</label>
+              <div className="form-group">
+                <label>Age (Earth Years)</label>
                 <input required type="number" min="0" name="age" value={formData.age} onChange={handleChange} placeholder="e.g. 24" />
               </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Species:</label>
-                <input required type="text" name="species" value={formData.species} onChange={handleChange} placeholder="Type your species" />
+              <div className="form-group">
+                <label>Species</label>
+                <input required type="text" name="species" value={formData.species} onChange={handleChange} placeholder="e.g. Human" />
               </div>
             </div>
 
-            <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Planet:</label>
-              <input required type="text" name="planet" value={formData.planet} onChange={handleChange} placeholder="e.g. Earth" />
+            <div className="form-group">
+              <label>Planet</label>
+              <input required type="text" name="planet" value={formData.planet} onChange={handleChange} placeholder="Where do you reside?" />
             </div>
 
-            <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Bio:</label>
+            <div className="form-group">
+              <label>Bio</label>
               <textarea
                 name="bio"
                 value={formData.bio}
                 onChange={handleChange}
                 placeholder="What do you want the solar system to know about you?"
                 style={{
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  color: 'white',
-                  minHeight: '80px',
-                  fontFamily: 'inherit',
+                  minHeight: '100px',
                   resize: 'none'
                 }}
               />
             </div>
 
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <label style={{ fontSize: '0.9rem' }}>Interests:</label>
-                <span style={{ fontSize: '0.8rem', color: 'rgba(234, 222, 218, 0.7)' }}>Up to 3</span>
+            <div className="form-group">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label>Interests</label>
+                <span style={{ fontSize: '0.75rem', color: 'rgba(234, 222, 218, 0.5)', textTransform: 'uppercase' }}>Max 3</span>
               </div>
               <input
                 type="text"
                 value={interestInput}
                 onChange={e => setInterestInput(e.target.value)}
                 onKeyDown={handleInterestKeyDown}
-                placeholder="Type an interest and press Enter"
+                placeholder="Add interests..."
               />
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', margin: '12px 0' }}>
                 {formData.interests.map(interest => (
@@ -259,10 +252,13 @@ export default function Signup() {
                       padding: '8px 12px',
                       borderRadius: '999px',
                       border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'rgba(255,255,255,0.08)',
-                      color: 'white',
-                      cursor: 'pointer'
+                      background: 'rgba(217, 3, 104, 0.15)',
+                      color: 'var(--color-white)',
+                      fontWeight: '600',
+                      transition: 'all 0.2s ease'
                     }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(217, 3, 104, 0.3)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(217, 3, 104, 0.15)'}
                   >
                     {interest} ×
                   </button>
