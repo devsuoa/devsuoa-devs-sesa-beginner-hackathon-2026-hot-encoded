@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import { Heart } from 'lucide-react';
 import { mockAliens } from '../data/mockAliens';
 import type { AlienProfile } from '../data/mockAliens';
@@ -13,7 +12,6 @@ import { getScientificWarnings } from '../utils/scienceWarnings';
 export default function OrbitSystem() {
 
   const { preferences, addMatch, matches } = useAppContext();
-  const navigate = useNavigate();
   const triggerRocketNav = useRocketNav();
   const [selectedAlien, setSelectedAlien] = useState<AlienProfile | null>(null);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());

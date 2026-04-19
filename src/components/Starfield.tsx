@@ -82,7 +82,7 @@ export const Starfield = () => {
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(217, 3, 104, ${currentOpacity})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
         ctx.fill();
       }
 
