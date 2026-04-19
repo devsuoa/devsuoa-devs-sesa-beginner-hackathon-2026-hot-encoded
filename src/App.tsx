@@ -5,7 +5,6 @@ import Home from './pages/home/Home';
 import Explore from './pages/Explore';
 import Chat from './pages/Chat';
 import { RocketTransition } from './components/RocketTransition';
-import UserProfileWidget from './components/UserProfileWidget';
 
 function App() {
   const location = useLocation();
@@ -20,7 +19,6 @@ function App() {
           </Link>
         </div>
       )}
-      {!isHomePage && <UserProfileWidget />}
 
       <main className="main-content">
         <Routes>

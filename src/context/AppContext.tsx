@@ -20,6 +20,7 @@ export interface UserPreferences {
 interface AppContextType {
   preferences: UserPreferences | null;
   setPreferences: (prefs: UserPreferences) => void;
+  clearPreferences: () => void;
   matches: AlienProfile[];
   addMatch: (alien: AlienProfile) => void;
 }
@@ -50,6 +51,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setPreferencesState(prefs);
   };
 
+  const clearPreferences = () => {
+    setPreferencesState(null);
+    setMatches([]);
+    localStorage.removeItem('aligned_preferences');
+    localStorage.removeItem('aligned_matches');
+  };
+
   const addMatch = (alien: AlienProfile) => {
     if (!matches.find(m => m.id === alien.id)) {
       setMatches([...matches, alien]);
@@ -57,7 +65,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AppContext.Provider value={{ preferences, setPreferences, matches, addMatch }}>
+    <AppContext.Provider value={{ preferences, setPreferences, clearPreferences, matches, addMatch }}>
       {children}
     </AppContext.Provider>
   );
